@@ -61,7 +61,7 @@
 }
 
 .el-dialog:not(.is-fullscreen) {
-	margin-top: 6vh !important;
+	margin-top: 10vh;
 }
 
 .el-dialog__wrapper.scrollbar .el-dialog .el-dialog__body {
@@ -78,7 +78,6 @@
 			background-color: #f8f8f9;
 			color: #515a6e;
 			height: 40px;
-			font-size: 13px;
 		}
 	}
 	.el-table__body-wrapper {
@@ -99,11 +98,11 @@
 
 /** 表格布局 **/
 .pagination-container {
-	position: relative;
-	height: 25px;
-	margin-bottom: 10px;
-	margin-top: 15px;
-	padding: 10px 20px !important;
+	// position: relative;
+	// height: 25px;
+	// margin-bottom: 10px;
+	// margin-top: 15px;
+	padding:8px 0  !important;
 }
 
 /* tree border */
@@ -114,10 +113,7 @@
     border-radius:4px;
 }
 
-.pagination-container .el-pagination {
-	right: 0;
-	position: absolute;
-}
+
 
 @media ( max-width : 768px) {
   .pagination-container .el-pagination > .el-pagination__jump {
@@ -137,13 +133,11 @@
 /** 表格更多操作下拉样式 */
 .el-table .el-dropdown-link {
 	cursor: pointer;
-	color: #409EFF;
+	color: #3370ff;
 	margin-left: 5px;
 }
 
-.el-table .el-dropdown, .el-icon-arrow-down {
-	font-size: 12px;
-}
+
 
 .el-tree-node__content > .el-checkbox {
 	margin-right: 8px;
@@ -180,7 +174,7 @@
 }
 
 .el-card__body {
-	padding: 15px 20px 20px 20px;
+	padding: 8px 16px 16px 16px;
 }
 
 .card-box {

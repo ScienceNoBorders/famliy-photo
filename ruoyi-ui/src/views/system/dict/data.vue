@@ -1,191 +1,223 @@
 <template>
-  <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="字典名称" prop="dictType">
-        <el-select v-model="queryParams.dictType">
-          <el-option
-            v-for="item in typeOptions"
-            :key="item.dictId"
-            :label="item.dictName"
-            :value="item.dictType"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="字典标签" prop="dictLabel">
-        <el-input
-          v-model="queryParams.dictLabel"
-          placeholder="请输入字典标签"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="数据状态" clearable>
-          <el-option
-            v-for="dict in dict.type.sys_normal_disable"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:dict:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:dict:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:dict:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:dict:export']"
-        >导出</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-close"
-          size="mini"
-          @click="handleClose"
-        >关闭</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="字典编码" align="center" prop="dictCode" />
-      <el-table-column label="字典标签" align="center" prop="dictLabel">
-        <template slot-scope="scope">
-          <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{scope.row.dictLabel}}</span>
-          <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{scope.row.dictLabel}}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="字典键值" align="center" prop="dictValue" />
-      <el-table-column label="字典排序" align="center" prop="dictSort" />
-      <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:dict:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:dict:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-
-    <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="字典类型">
-          <el-input v-model="form.dictType" :disabled="true" />
-        </el-form-item>
-        <el-form-item label="数据标签" prop="dictLabel">
-          <el-input v-model="form.dictLabel" placeholder="请输入数据标签" />
-        </el-form-item>
-        <el-form-item label="数据键值" prop="dictValue">
-          <el-input v-model="form.dictValue" placeholder="请输入数据键值" />
-        </el-form-item>
-        <el-form-item label="样式属性" prop="cssClass">
-          <el-input v-model="form.cssClass" placeholder="请输入样式属性" />
-        </el-form-item>
-        <el-form-item label="显示排序" prop="dictSort">
-          <el-input-number v-model="form.dictSort" controls-position="right" :min="0" />
-        </el-form-item>
-        <el-form-item label="回显样式" prop="listClass">
-          <el-select v-model="form.listClass">
-            <el-option
-              v-for="item in listClassOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+  <div class="app-container search-table-box aidex-table">
+    <el-card shadow="never" ref="queryRef" style="margin-bottom: 12px;" class="search_card" v-show="showSearch">
+      <div class="filter-container">
+        <div class="search_box">
+          <el-form :model="queryParams" ref="queryForm" label-width="80px">
+            <el-row :gutter="16">
+              <el-col :md="6">
+                <el-form-item label="字典名称" prop="dictType">
+                  <el-select v-model="queryParams.dictType"
+                    size="small"
+                    style="width: 100%"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in typeOptions"
+                      :key="item.dictId"
+                      :label="item.dictName"
+                      :value="item.dictType"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :md="6">
+                <el-form-item label="字典标签" prop="dictLabel">
+                  <el-input
+                    v-model="queryParams.dictLabel"
+                    placeholder="请输入字典标签"
+                    clearable
+                    @keyup.enter.native="handleQuery"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :md="6">
+                <el-form-item label="状态" prop="status">
+                  <el-select v-model="queryParams.status" placeholder="数据状态" @change="handleQuery" style="width: 100%" clearable>
+                    <el-option
+                      v-for="dict in dict.type.sys_normal_disable"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :md="6" align="right" style="float: right;">
+                <el-form-item>
+                  <el-button class="filter-item" type="primary" @click="handleQuery">搜索</el-button>
+                  <el-button class="filter-item" style="margin-left: 8px" @click="resetQuery">重置</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
       </div>
-    </el-dialog>
+    </el-card>
+    <el-card shadow="never" >
+      <template #header>
+        <el-row>
+          <el-col :span="8">
+            <div class="card-header">
+              <el-button disabled type="text">字典数据</el-button>
+            </div>
+          </el-col>
+          <el-col :span="16">
+            <div class="btn_box" align="right" style="float: right;">
+              <el-button
+                class="filter-item" style="margin-left: 8px;"
+                type="primary"
+                icon="el-icon-plus"
+                @click="handleAdd"
+                v-hasPermi="['system:dict:add']"
+              >新增</el-button>
+              <el-button
+                v-if="!multiple"
+                class="filter-item" style="margin-left: 8px;"
+                type="danger"
+                icon="el-icon-delete"
+                :disabled="multiple"
+                @click="handleDelete"
+                v-hasPermi="['system:dict:remove']"
+              >删除</el-button>
+              <el-button
+                class="filter-item" style="margin-left: 8px;"
+                icon="el-icon-download"
+                @click="handleExport"
+                v-hasPermi="['system:dict:export']"
+              >导出</el-button>
+              <el-button
+                class="filter-item" style="margin-left: 8px;"
+                icon="el-icon-close"
+                @click="handleClose"
+              >关闭</el-button>
+              <right-toolbar @showSearchFun="showSearchFun" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+            </div>
+          </el-col>
+        </el-row>
+      </template>
+
+      <el-table ref="tableRef" v-loading="loading" :data="dataList" @selection-change="handleSelectionChange"  highlight-current-row style="width: 100%;" :height="tableHeight">
+        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="字典编码" align="center" prop="dictCode" />
+        <el-table-column label="字典标签" align="center" prop="dictLabel">
+          <template slot-scope="scope">
+            <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{scope.row.dictLabel}}</span>
+            <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{scope.row.dictLabel}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="字典键值" align="center" prop="dictValue" />
+        <el-table-column label="字典排序" align="center" prop="dictSort" />
+        <el-table-column label="状态" align="center" prop="status">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
+        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.createTime) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              type="text"
+              @click="handleUpdate(scope.row)"
+              v-hasPermi="['system:dict:edit']"
+            >修改</el-button>
+            <el-divider direction="vertical"></el-divider>
+            <el-button
+              type="text"
+              style="color: red;"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['system:dict:remove']"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+        <div slot="empty">
+          <svg-icon icon-class="search-none" style="font-size: 64px;" />
+          <p>暂无数据</p>
+        </div>
+      </el-table>
+
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+      />
+
+      <!-- 添加或修改参数配置对话框 -->
+      <el-dialog :title="title" :visible.sync="open" width="720px" append-to-body>
+        <div style="height: 550px;overflow: auto; padding: 12px 24px;">
+          <el-form ref="form" :model="form" :rules="rules" label-position="top">
+            <el-row :gutter="24">
+              <el-col :span="12">
+                <el-form-item label="字典类型">
+                  <el-input v-model="form.dictType" :disabled="true" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="12">
+                <el-form-item label="数据标签" prop="dictLabel">
+                  <el-input v-model="form.dictLabel" placeholder="请输入数据标签" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="数据键值" prop="dictValue">
+                  <el-input v-model="form.dictValue" placeholder="请输入数据键值" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="样式属性" prop="cssClass">
+                  <el-input v-model="form.cssClass" placeholder="请输入样式属性" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="显示排序" prop="dictSort">
+                  <el-input-number :step="10" v-model="form.dictSort" controls-position="right" style="width: 100%;" :min="10" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="回显样式" prop="listClass">
+                  <el-select v-model="form.listClass" style="width: 100%;">
+                    <el-option
+                      v-for="item in listClassOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="状态" prop="status">
+                  <el-radio-group v-model="form.status">
+                    <el-radio-button
+                      v-for="dict in dict.type.sys_normal_disable"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{dict.label}}</el-radio-button>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="备注" prop="remark">
+                  <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="请输入内容"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </el-dialog>
+    </el-card>
   </div>
 </template>
 
@@ -198,6 +230,8 @@ export default {
   dicts: ['sys_normal_disable'],
   data() {
     return {
+      advanced: false,
+      tableHeight: "calc(100vh - 320px)",
       // 遮罩层
       loading: true,
       // 选中数组
@@ -277,6 +311,26 @@ export default {
     this.getTypeList();
   },
   methods: {
+    showSearchFun(isShowSearch){
+      this.showSearch = isShowSearch
+      let oldHeight = this.$refs.queryRef.$el.offsetHeight
+      if(!isShowSearch){
+          //当前是显示状态
+          oldHeight = oldHeight + 12
+      }else{
+          oldHeight = oldHeight - 12
+      }
+      this.$nextTick(() => (
+         this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
+      ))
+    },
+    toggleAdvanced() {
+      const oldHeight = this.$refs.queryRef.$el.offsetHeight
+      this.advanced = !this.advanced
+      this.$nextTick(() => (
+         this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
+      ))
+    },
     /** 查询字典类型详细 */
     getType(dictId) {
       getType(dictId).then(response => {

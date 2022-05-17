@@ -15,7 +15,7 @@
           :model="formData"
           :rules="rules"
           size="medium"
-          label-width="100px"
+          label-width="80px"
         >
           <el-col :span="24">
             <el-form-item label="生成类型" prop="type">

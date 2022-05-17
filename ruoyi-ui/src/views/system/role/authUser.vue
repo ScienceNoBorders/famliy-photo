@@ -1,101 +1,117 @@
 <template>
-  <div class="app-container">
-     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
-      <el-form-item label="用户名称" prop="userName">
-        <el-input
-          v-model="queryParams.userName"
-          placeholder="请输入用户名称"
-          clearable
-          style="width: 240px"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="手机号码" prop="phonenumber">
-        <el-input
-          v-model="queryParams.phonenumber"
-          placeholder="请输入手机号码"
-          clearable
-          style="width: 240px"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+  <div class="app-container search-table-box aidex-table">
+    <el-card shadow="never" ref="queryRef" style="margin-bottom: 12px;" class="search_card" v-show="showSearch">
+      <div class="filter-container">
+        <div class="search_box">
+          <el-form :model="queryParams" ref="queryForm" label-width="80px">
+            <el-row :gutter="16">
+              <el-col :md="6">
+                <el-form-item label="用户名称" prop="userName">
+                  <el-input
+                    v-model="queryParams.userName"
+                    placeholder="请输入用户名称"
+                    clearable
+                    @keyup.enter.native="handleQuery"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :md="6">
+                <el-form-item label="手机号码" prop="phonenumber">
+                  <el-input
+                    v-model="queryParams.phonenumber"
+                    placeholder="请输入手机号码"
+                    clearable
+                    @keyup.enter.native="handleQuery"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :md="6" align="right" style="float: right;">
+                <el-form-item>
+                  <el-button class="filter-item" type="primary" @click="handleQuery">搜索</el-button>
+                  <el-button class="filter-item" style="margin-left: 8px" @click="resetQuery">重置</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+      </div>
+    </el-card>
+    <el-card shadow="never" >
+      <template #header>
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="8">
+            <div class="card-header">
+              <el-button disabled type="text">分配用户</el-button>
+            </div>
+          </el-col>
+          <el-col :span="16">
+            <div class="btn_box" align="right" style="float: right;">
+              <el-button
+                class="filter-item"
+                style="margin-left: 8px;"
+                type="primary"
+                icon="el-icon-plus"
+                @click="openSelectUser"
+                v-hasPermi="['system:role:add']"
+              >添加用户</el-button>
+              <el-button
+                class="filter-item"
+                style="margin-left: 8px;"
+                icon="el-icon-circle-close"
+                :disabled="multiple"
+                @click="cancelAuthUserAll"
+                v-hasPermi="['system:role:remove']"
+              >批量取消授权</el-button>
+              <el-button
+                class="filter-item"
+                style="margin-left: 8px;"
+                icon="el-icon-close"
+                @click="handleClose"
+              >关闭</el-button>
+              <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+            </div>
+          </el-col>
+        </el-row>
+      </template>
+      <el-table ref="tableRef" v-loading="loading" :data="userList"
+        highlight-current-row style="width: 100%;"
+        :height="tableHeight"
+        @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
+        <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
+        <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
+        <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
+        <el-table-column label="状态" align="center" prop="status">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.createTime) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              type="text"
+              @click="cancelAuthUser(scope.row)"
+              v-hasPermi="['system:role:remove']"
+            >取消授权</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="openSelectUser"
-          v-hasPermi="['system:role:add']"
-        >添加用户</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-circle-close"
-          size="mini"
-          :disabled="multiple"
-          @click="cancelAuthUserAll"
-          v-hasPermi="['system:role:remove']"
-        >批量取消授权</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-close"
-          size="mini"
-          @click="handleClose"
-        >关闭</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
-      <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
-      <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
-      <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
-      <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-circle-close"
-            @click="cancelAuthUser(scope.row)"
-            v-hasPermi="['system:role:remove']"
-          >取消授权</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-    <select-user ref="select" :roleId="queryParams.roleId" @ok="handleQuery" />
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+      />
+      <select-user ref="select" :roleId="queryParams.roleId" @ok="handleQuery" />
+    </el-card>
   </div>
 </template>
 
@@ -111,6 +127,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      tableHeight: "calc(100vh - 316px)",
       // 选中用户组
       userIds: [],
       // 非多个禁用
@@ -139,6 +156,19 @@ export default {
     }
   },
   methods: {
+    showSearchFun(isShowSearch){
+      this.showSearch = isShowSearch
+      let oldHeight = this.$refs.queryRef.$el.offsetHeight
+      if(!isShowSearch){
+          //当前是显示状态
+          oldHeight = oldHeight + 12
+      }else{
+          oldHeight = oldHeight - 12
+      }
+      this.$nextTick(() => (
+         this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
+      ))
+    },
     /** 查询授权用户列表 */
     getList() {
       this.loading = true;

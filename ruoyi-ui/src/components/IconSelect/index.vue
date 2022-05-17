@@ -4,12 +4,16 @@
     <el-input v-model="name" style="position: relative;" clearable placeholder="请输入图标名称" @clear="filterIcons" @input.native="filterIcons">
       <i slot="suffix" class="el-icon-search el-input__icon" />
     </el-input>
-    <div class="icon-list">
-      <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)">
-        <svg-icon :icon-class="item" style="height: 30px;width: 16px;" />
-        <span>{{ item }}</span>
-      </div>
-    </div>
+    <el-tabs type="border-card">
+      <el-tab-pane  :label="classify.classifyName" v-for="classify of iconList">
+        <div class="icon-list">
+        <div v-for="item of classify.iconList" :key="item"  @click="selectedIcon(item)">
+          <svg-icon :icon-class="item" style="height: 30px;width: 16px;" />
+          <span>{{ item }}</span>
+          </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -17,6 +21,9 @@
 import icons from './requireIcons'
 export default {
   name: 'IconSelect',
+  props:{
+    notExitisLabel:['办公']
+  },
   data() {
     return {
       name: '',
@@ -25,9 +32,15 @@ export default {
   },
   methods: {
     filterIcons() {
-      this.iconList = icons
+      this.iconList = JSON.parse(JSON.stringify(icons))
       if (this.name) {
-        this.iconList = this.iconList.filter(item => item.includes(this.name))
+        let index = 0
+        const that = this
+        this.iconList.forEach(function(icons){
+          that.iconList[index].iconList = icons.iconList.filter(item => item.includes(that.name))
+          index++;
+         }
+        )
       }
     },
     selectedIcon(name) {

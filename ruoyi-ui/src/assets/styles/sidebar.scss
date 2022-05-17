@@ -23,9 +23,9 @@
     bottom: 0;
     left: 0;
     z-index: 1001;
-    overflow: hidden;
-    -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    box-shadow: 2px 0 6px rgba(0,21,41,.35);
+    // overflow: hidden;
+    // -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
+    // box-shadow: 2px 0 6px rgba(0,21,41,.35);
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -42,6 +42,9 @@
 
     .el-scrollbar {
       height: 100%;
+	  -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
+	  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+	  
     }
 
     &.has-logo {
@@ -61,7 +64,7 @@
     }
 
     .svg-icon {
-      margin-right: 16px;
+      margin-right:8px;
     }
 
     .el-menu {

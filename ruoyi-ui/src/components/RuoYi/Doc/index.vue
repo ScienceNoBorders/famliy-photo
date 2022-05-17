@@ -1,6 +1,7 @@
 <template>
   <div>
-    <svg-icon icon-class="question" @click="goto" />
+    <svg-icon icon-class="question-line" @click="goto" />
+    <i class="ri-survey-line"></i>
   </div>
 </template>
 

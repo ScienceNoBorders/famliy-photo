@@ -1,8 +1,9 @@
 <template>
-  <div v-if="!item.hidden">
+  <div v-if="!item.hidden" class="aidex_menu">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
+      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)" :style="{ borderColor: settings.theme }">
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}"
+        >
           <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
         </el-menu-item>
       </app-link>
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+  import {  mapState } from "vuex";
 import path from 'path'
 import { isExternal } from '@/utils/validate'
 import Item from './Item'
@@ -34,6 +36,9 @@ import FixiOSBug from './FixiOSBug'
 export default {
   name: 'SidebarItem',
   components: { Item, AppLink },
+  computed: {
+      ...mapState(["settings"]),
+  },
   mixins: [FixiOSBug],
   props: {
     // route object
@@ -98,3 +103,6 @@ export default {
   }
 }
 </script>
+<style >
+
+</style>

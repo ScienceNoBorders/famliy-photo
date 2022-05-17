@@ -1,27 +1,35 @@
 <template>
   <!-- 导入表 -->
-  <el-dialog title="导入表" :visible.sync="visible" width="800px" top="5vh" append-to-body>
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
-      <el-form-item label="表名称" prop="tableName">
-        <el-input
-          v-model="queryParams.tableName"
-          placeholder="请输入表名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="表描述" prop="tableComment">
-        <el-input
-          v-model="queryParams.tableComment"
-          placeholder="请输入表描述"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
+  <el-dialog title="导入表" :visible.sync="visible" width="800px" top="10vh" append-to-body>
+    <el-form :model="queryParams" ref="queryForm" label-width="80px">
+      <el-row :gutter="16">
+        <el-col :md="8">
+          <el-form-item label="表名称" prop="tableName">
+            <el-input
+              v-model="queryParams.tableName"
+              placeholder="请输入表名称"
+              clearable
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :md="8" >
+          <el-form-item label="表描述" prop="tableComment">
+            <el-input
+              v-model="queryParams.tableComment"
+              placeholder="请输入表描述"
+              clearable
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :md="8" >
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <el-row>
       <el-table @row-click="clickRow" ref="table" :data="dbTableList" @selection-change="handleSelectionChange" height="260px">

@@ -1,255 +1,314 @@
 <template>
-  <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input
-          v-model="queryParams.roleName"
-          placeholder="请输入角色名称"
-          clearable
-          style="width: 240px"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="权限字符" prop="roleKey">
-        <el-input
-          v-model="queryParams.roleKey"
-          placeholder="请输入权限字符"
-          clearable
-          style="width: 240px"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          placeholder="角色状态"
-          clearable
-          style="width: 240px"
-        >
-          <el-option
-            v-for="dict in dict.type.sys_normal_disable"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="创建时间">
-        <el-date-picker
-          v-model="dateRange"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:role:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:role:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:role:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:role:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="角色编号" prop="roleId" width="120" />
-      <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="显示顺序" prop="roleSort" width="100" />
-      <el-table-column label="状态" align="center" width="100">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.status"
-            active-value="0"
-            inactive-value="1"
-            @change="handleStatusChange(scope.row)"
-          ></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope" v-if="scope.row.roleId !== 1">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:role:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:role:remove']"
-          >删除</el-button>
-          <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:role:edit']">
-            <span class="el-dropdown-link">
-              <i class="el-icon-d-arrow-right el-icon--right"></i>更多
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="handleDataScope" icon="el-icon-circle-check"
-                v-hasPermi="['system:role:edit']">数据权限</el-dropdown-item>
-              <el-dropdown-item command="handleAuthUser" icon="el-icon-user"
-                v-hasPermi="['system:role:edit']">分配用户</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-
-    <!-- 添加或修改角色配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="form.roleName" placeholder="请输入角色名称" />
-        </el-form-item>
-        <el-form-item prop="roleKey">
-          <span slot="label">
-            <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasRole('admin')`)" placement="top">
-              <i class="el-icon-question"></i>
-            </el-tooltip>
-            权限字符
-          </span>
-          <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
-        </el-form-item>
-        <el-form-item label="角色顺序" prop="roleSort">
-          <el-input-number v-model="form.roleSort" controls-position="right" :min="0" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="菜单权限">
-          <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
-          <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
-          <el-checkbox v-model="form.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox>
-          <el-tree
-            class="tree-border"
-            :data="menuOptions"
-            show-checkbox
-            ref="menu"
-            node-key="id"
-            :check-strictly="!form.menuCheckStrictly"
-            empty-text="加载中，请稍候"
-            :props="defaultProps"
-          ></el-tree>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+  <div class="app-container search-table-box aidex-table">
+    <el-card shadow="never" ref="queryRef" style="margin-bottom: 12px;" class="search_card" v-show="showSearch">
+      <div class="filter-container">
+        <div class="search_box">
+          <el-form :model="queryParams" ref="queryForm" label-width="80px">
+            <el-row :gutter="16">
+              <el-col :md="6">
+                <el-form-item label="角色名称"  prop="roleName">
+                  <el-input
+                    v-model="queryParams.roleName"
+                    style="width: 100%"
+                    clearable
+                    placeholder="请输入角色名称"
+                    @keyup.enter.native="handleQuery"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :md="6">
+                <el-form-item label="权限字符" prop="roleKey">
+                  <el-input
+                    v-model="queryParams.roleKey"
+                    clearable
+                    style="width: 100%"
+                    placeholder="请输入权限字符"
+                    @keyup.enter.native="handleQuery"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :md="6" >
+                <el-form-item label="状态" prop="status" >
+                  <el-select
+                    v-model="queryParams.status"
+                    clearable
+                    @change="handleQuery"
+                    style="width: 100%"
+                    placeholder="角色状态"
+                  >
+                    <el-option
+                      v-for="dict in dict.type.sys_normal_disable"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :md="6" v-if="advanced">
+                <el-form-item label="创建时间">
+                  <el-date-picker
+                    v-model="dateRange"
+                    clearable
+                    style="width: 100%"
+                    value-format="yyyy-MM-dd"
+                    type="daterange"
+                    range-separator="-"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                  ></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :md="6" align="right" style="float: right;">
+                <el-form-item class="search_btn_box">
+                  <el-button class="filter-item" type="primary" @click="handleQuery" >搜索</el-button>
+                  <el-button class="filter-item" style="margin-left: 8px;" @click="resetQuery" >重置</el-button>
+                  <a @click="toggleAdvanced" style="margin:0 4px 0 8px ;vertical-align: middle;">
+                    {{ advanced ? '收起' : '展开' }}
+                    <i :class="advanced ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i>
+                  </a>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
       </div>
-    </el-dialog>
+    </el-card>
+    <el-card shadow="never" >
+      <template #header>
+        <el-row>
+          <el-col :span="8">
+            <div class="card-header">
+              <el-button disabled type="text">角色信息</el-button>
+            </div>
+          </el-col>
+          <el-col :span="16">
+            <div class="btn_box" align="right" style="float: right;">
+              <el-button
+                class="filter-item"
+                style="margin-left: 8px;"
+                type="primary"
+                icon="el-icon-plus"
+                @click="handleAdd"
+                v-hasPermi="['system:role:add']"
+              >新增</el-button>
+              <el-button
+                class="filter-item"
+                style="margin-left: 8px;"
+                type="danger"
+                v-if="!multiple"
+                icon="el-icon-delete"
+                :disabled="multiple"
+                @click="handleDelete"
+                v-hasPermi="['system:role:remove']"
+              >删除</el-button>
+              <el-button
+                class="filter-item"
+                icon="el-icon-download"
+                style="margin-left: 8px;"
+                @click="handleExport"
+                v-hasPermi="['system:role:export']"
+               >导出</el-button>
+              <right-toolbar :showSearch.sync="showSearch"
+               @showSearchFun="showSearchFun" @queryTable="getList"></right-toolbar>
+            </div>
+          </el-col>
+        </el-row>
+      </template>
 
-    <!-- 分配角色数据权限对话框 -->
-    <el-dialog :title="title" :visible.sync="openDataScope" width="500px" append-to-body>
-      <el-form :model="form" label-width="80px">
-        <el-form-item label="角色名称">
-          <el-input v-model="form.roleName" :disabled="true" />
-        </el-form-item>
-        <el-form-item label="权限字符">
-          <el-input v-model="form.roleKey" :disabled="true" />
-        </el-form-item>
-        <el-form-item label="权限范围">
-          <el-select v-model="form.dataScope" @change="dataScopeSelectChange">
-            <el-option
-              v-for="item in dataScopeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="数据权限" v-show="form.dataScope == 2">
-          <el-checkbox v-model="deptExpand" @change="handleCheckedTreeExpand($event, 'dept')">展开/折叠</el-checkbox>
-          <el-checkbox v-model="deptNodeAll" @change="handleCheckedTreeNodeAll($event, 'dept')">全选/全不选</el-checkbox>
-          <el-checkbox v-model="form.deptCheckStrictly" @change="handleCheckedTreeConnect($event, 'dept')">父子联动</el-checkbox>
-          <el-tree
-            class="tree-border"
-            :data="deptOptions"
-            show-checkbox
-            default-expand-all
-            ref="dept"
-            node-key="id"
-            :check-strictly="!form.deptCheckStrictly"
-            empty-text="加载中，请稍候"
-            :props="defaultProps"
-          ></el-tree>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitDataScope">确 定</el-button>
-        <el-button @click="cancelDataScope">取 消</el-button>
-      </div>
-    </el-dialog>
+      <el-table stripe ref="tableRef" v-loading="loading" :data="roleList"
+        @selection-change="handleSelectionChange"
+        highlight-current-row style="width: 100%;"
+        :height="tableHeight">
+        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="角色编号" prop="roleId" width="120" />
+        <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" />
+        <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true"width="120" />
+        <el-table-column label="显示顺序" prop="roleSort"  width="120" />
+        <el-table-column label="状态" align="center" width="120">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.status"
+              active-value="0"
+              inactive-value="1"
+              @change="handleStatusChange(scope.row)"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" align="left" prop="createTime" width="180">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.createTime) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="220">
+          <template slot-scope="scope" v-if="scope.row.roleId !== 1">
+            <el-button
+              type="text"
+              @click="handleUpdate(scope.row)"
+              v-hasPermi="['system:role:edit']"
+            >
+              修改
+            </el-button>
+            <el-divider direction="vertical"></el-divider>
+            <el-button
+              type="text"
+              style="color: red;"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['system:role:remove']"
+            >
+              删除
+            </el-button>
+            <el-divider direction="vertical"></el-divider>
+            <el-dropdown @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:role:edit']">
+              <span class="el-dropdown-link">
+                <el-button type="text">更多</el-button><i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="handleDataScope"
+                  v-hasPermi="['system:role:edit']">数据权限</el-dropdown-item>
+                <el-dropdown-item command="handleAuthUser"
+                  v-hasPermi="['system:role:edit']">分配用户</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+        </el-table-column>
+        <div slot="empty">
+          <svg-icon icon-class="search-none" style="font-size: 64px;" />
+          <p>暂无数据</p>
+        </div>
+      </el-table>
+
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+      />
+
+      <!-- 添加或修改角色配置对话框 -->
+      <el-dialog :title="title" :visible.sync="open" width="720px" top="10vh"  append-to-body>
+        <div style="height: 600px;overflow: auto; padding: 12px 24px;">
+          <el-form ref="form" :model="form" :rules="rules" label-position="top">
+            <el-row :gutter="24">
+              <el-col :span="12">
+                <el-form-item label="角色名称" prop="roleName" >
+                  <el-input v-model="form.roleName" placeholder="请输入角色名称" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item prop="roleKey">
+                  <span slot="label">
+                    权限字符
+                    <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasRole('admin')`)" placement="top">
+                     <svg-icon icon-class="question-line" style="font-size:16px;vertical-align:-0.2em" />
+                    </el-tooltip>
+                  </span>
+                  <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="角色顺序" prop="roleSort">
+                  <el-input-number :step="10" style="width: 100%;" v-model="form.roleSort" controls-position="right" :min="10" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="状态">
+                  <el-radio-group v-model="form.status">
+                    <el-radio-button
+                      v-for="dict in dict.type.sys_normal_disable"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{dict.label}}</el-radio-button>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="菜单权限">
+                  <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
+                  <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
+                  <el-checkbox v-model="form.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox>
+                  <el-tree
+                    class="tree-border"
+                    :data="menuOptions"
+                    show-checkbox
+                    ref="menu"
+                    node-key="id"
+                    :check-strictly="!form.menuCheckStrictly"
+                    empty-text="加载中，请稍候"
+                    :props="defaultProps"
+                  ></el-tree>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="备注">
+                  <el-input v-model="form.remark" :rows="2" type="textarea" placeholder="请输入内容"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </el-dialog>
+
+      <!-- 分配角色数据权限对话框 -->
+      <el-dialog :title="title" :visible.sync="openDataScope" width="520px" append-to-body>
+        <div style="height: 400px;overflow: auto; padding: 12px 24px;">
+          <el-form :model="form" label-position="top">
+            <el-row :gutter="24">
+              <el-col :span="24">
+                <el-form-item label="角色名称">
+                  <el-input v-model="form.roleName" :disabled="true" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="权限字符">
+                  <el-input v-model="form.roleKey" :disabled="true" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="权限范围">
+                  <el-select v-model="form.dataScope" @change="dataScopeSelectChange" style="width:100%">
+                    <el-option
+                      v-for="item in dataScopeOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="数据权限" v-show="form.dataScope == 2">
+                  <el-checkbox v-model="deptExpand" @change="handleCheckedTreeExpand($event, 'dept')">展开/折叠</el-checkbox>
+                  <el-checkbox v-model="deptNodeAll" @change="handleCheckedTreeNodeAll($event, 'dept')">全选/全不选</el-checkbox>
+                  <el-checkbox v-model="form.deptCheckStrictly" @change="handleCheckedTreeConnect($event, 'dept')">父子联动</el-checkbox>
+                  <el-tree
+                    class="tree-border"
+                    :data="deptOptions"
+                    show-checkbox
+                    default-expand-all
+                    ref="dept"
+                    node-key="id"
+                    :check-strictly="!form.deptCheckStrictly"
+                    empty-text="加载中，请稍候"
+                    :props="defaultProps"
+                  ></el-tree>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitDataScope">确 定</el-button>
+          <el-button @click="cancelDataScope">取 消</el-button>
+        </div>
+      </el-dialog>
+    </el-card>
   </div>
 </template>
 
@@ -263,12 +322,16 @@ export default {
   dicts: ['sys_normal_disable'],
   data() {
     return {
+      advanced: false,
+      tableHeight: "calc(100vh - 320px)",
       // 遮罩层
       loading: true,
       // 选中数组
       ids: [],
       // 非单个禁用
       single: true,
+      // 非单个禁用
+      height: '0px',
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -348,6 +411,26 @@ export default {
     this.getList();
   },
   methods: {
+    showSearchFun(isShowSearch){
+      this.showSearch = isShowSearch
+      let oldHeight = this.$refs.queryRef.$el.offsetHeight
+      if(!isShowSearch){
+          //当前是显示状态
+          oldHeight = oldHeight + 12
+      }else{
+          oldHeight = oldHeight - 12
+      }
+      this.$nextTick(() => (
+         this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
+      ))
+    },
+    toggleAdvanced() {
+      const oldHeight = this.$refs.queryRef.$el.offsetHeight
+      this.advanced = !this.advanced
+      this.$nextTick(() => (
+         this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
+      ))
+    },
     /** 查询角色列表 */
     getList() {
       this.loading = true;

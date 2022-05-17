@@ -33,7 +33,7 @@
         </div>
 
         <div class="drawer-item">
-          <span>主题颜色</span>
+         <!-- <span>主题颜色</span> -->
           <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
         </div>
       </div>
@@ -41,7 +41,7 @@
       <el-divider/>
 
       <h3 class="drawer-title">系统布局配置</h3>
-      
+
       <div class="drawer-item">
         <span>开启 TopNav</span>
         <el-switch v-model="topNav" class="drawer-switch" />

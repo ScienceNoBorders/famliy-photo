@@ -13,9 +13,7 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
-label {
-  font-weight: 700;
-}
+
 
 html {
   height: 100%;
@@ -121,7 +119,8 @@ aside {
 
 //main-container全局样式
 .app-container {
-  padding: 20px;
+  padding: 12px;
+  background-color: #F0F2F5;
 }
 
 .components-container {
@@ -138,8 +137,8 @@ aside {
 }
 
 .sub-navbar {
-  height: 50px;
-  line-height: 50px;
+  height: 50PX;
+  line-height: 50PX;
   position: relative;
   width: 100%;
   text-align: right;
