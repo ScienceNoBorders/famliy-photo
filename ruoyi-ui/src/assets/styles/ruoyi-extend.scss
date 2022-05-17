@@ -1,0 +1,536 @@
+ /**
+ * 若依扩展样式布局处理
+ * Copyright (c) 2019 ruoyi
+ */
+#app .app-main{
+  background: #f0f2f5;
+  .el-input__inner{
+  	border-radius:2px ;
+  }
+  .vue-treeselect__control{
+	  height:30px;
+  }
+  .card-header {
+    .el-button.el-button--text{
+      color: #202d40;
+      font-weight: 600;
+      cursor: inherit;
+    }
+  }
+}
+
+/** 查询框样式 */
+.search_btn_box .el-form-item__content{
+  margin: 0!important;
+}
+.main-container{
+  background-color: #f0f2f5;
+}
+
+/** 表格样式 */
+.aidex-table{
+  .cell{
+    .el-button--small.el-button--text{
+     padding: 0!important;
+    }
+   .el-button--text{
+      padding: 0!important;
+    }
+  }
+
+  .el-table--mini{
+    .el-dropdown{
+      font-size: 12px;
+    }
+  }
+  padding: 12px;
+  .btn_box{
+   > button{
+
+   }
+   .top-right-btn{
+      float: right;
+      position: initial;
+      margin-left: 15px;
+   }
+ }
+  label{
+    color: #202d40;
+    font-weight: normal;
+  }
+  .el-range-editor--small.el-input__inner{
+    background-color:#f8f9fa;
+    border-color: #dadfe6;
+  }
+  .pagination-container{
+    margin: 0;
+  }
+
+  .search-table-box{
+      padding: 16px;
+  }
+    .search_box{
+      .filter-item{
+        margin: 0;
+      }
+      .el-form-item{
+        margin-bottom: 16px;
+      }
+    }
+    .search_card{
+	  .el-card__body{
+		      padding: 16px 16px 0 16px;
+	  }
+      .el-range-input{
+            background: inherit;
+      }
+      @media only screen and (min-width: 1920px){
+        .el-col-xl-5{
+          width: 20%;
+        }
+      }
+      @media only screen and (max-width: 1680px){
+        .el-col-lg-6{
+          width: 25%;
+        }
+      }
+    }
+    .btn_box{
+       .el-button{
+          margin-bottom: 0;
+       }
+      }
+    .el-card__body{
+      padding: 16px 16px 0 16px;
+      .el-table th{
+         color: #202d40;
+         line-height: 1.5;
+         padding: 8px 0;
+         background-color: #f5f7fa;
+      }
+
+      .el-table td{
+           color: #202d40;
+           line-height: 1.5;
+      }
+      .el-table{
+         .el-button--medium{
+           padding: 0;
+         }
+      }
+
+    }
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell{
+  background: #F8f9fa;
+}
+    .el-card__header{
+        padding: 8px 16px;
+        border-color: #dadfe6;
+        .card-header{
+          display: inline-block;
+          line-height: 32px;
+        }
+
+      }
+      .search_box{
+        display:block;
+        .el-input__inner{
+
+          background:#f8f9fa;
+        }
+        .filter-item{
+          margin: 0;
+          display: block;
+          &.el-button{
+            display: inline-block;
+          }
+
+        }
+
+      }
+
+      .el-table--small{
+        font-size: 14px;
+        .el-button--medium{
+          padding: 0;
+        }
+        .el-tag--medium{
+          height: 24px;
+          line-height: 22px;
+        }
+        .typeFilter{
+          margin-left: 8px;
+        }
+        .caret-wrapper{
+          height: 22px;
+          vertical-align: top;
+        }
+       .sort-caret.ascending{
+         top: 0;
+       }
+        .sort-caret.descending{
+          bottom: 0;
+        }
+      }
+      .el-button--small{
+        font-size: 14px;
+      }
+      .filter-container{
+        padding-bottom: 0;
+      }
+    .el-button--small{
+      padding: 8px 12px;
+    }
+
+    .el-form--label-top {
+      .el-form-item__label{
+        padding-bottom: 0;
+        line-height: 32px;
+        font-weight: normal;
+      }
+      .el-form-item{
+        margin-bottom: 16px;
+      }
+      .filter-item{
+        display: block;
+    }
+    .el-date-editor.el-input, .el-date-editor.el-input__inner{
+      width: 100%;
+    }
+  }
+  .el-table .el-table__header-wrapper th, .el-table .el-table__fixed-header-wrapper th{
+  }
+  .aidex_menu{
+    .el-submenu {
+      .el-menu-item{
+        height: 40px;
+        line-height: 40px;
+      }
+    }
+  }
+
+  .el-breadcrumb__inner.islink{
+  	color: #FFFFFF !important;
+  }
+}
+  .el-breadcrumb__inner{
+    	color: #FFFFFF !important;
+  }
+.aidex_menu{
+        .el-menu-item{
+          height: 40px;
+          line-height: 40px;
+        }
+        .el-submenu__title{
+          height: 40px;
+          line-height: 40px;
+        }
+       .el-submenu{
+         .el-menu-item{
+           height: 40px;
+           line-height: 40px;
+         }
+       }
+      }
+#app {
+  .tags-view-container .tags-view-wrapper .tags-view-item{
+    height: 24px;
+    line-height: 24px;
+    margin-top: 4px;
+    border-radius: 2px;
+  }
+  .tags-view-container .tags-view-wrapper .tags-view-item.active::before{
+    display: none;
+  }
+  .tags-view-wrapper .tags-view-item .el-icon-close:before{
+        vertical-align: middle;
+        font-size: 20px;
+        line-height: 16px;
+  }
+  .tags-view-wrapper .tags-view-item .el-icon-close:hover{
+    text-align: center;
+    background: none;
+  }
+.el-breadcrumb__inner.is-link, .el-breadcrumb__inner a{
+    color: #fff;
+  }
+  .hamburger{
+    fill: #FFFFFF;
+  }
+  .sidebar-logo-link{
+    text-align: left;
+    padding: 0 8px;
+  }
+.topmenu-container.el-menu--horizontal > .el-menu-item{
+  height: 50px!important;
+  line-height: 50px!important;
+  border: 0!important;
+  color: #FFFFFF!important;
+}
+ .sidebar-container{
+   .el-scrollbar{
+     box-shadow: 2px 0 6px rgb(0 21 41 / 6%);
+   }
+ }
+.hideSidebar{
+  .sidebar-logo-link{
+    text-align: center;
+  }
+}
+
+.hasTagsView {
+
+  .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover, .el-menu--horizontal > .el-menu-item:not(.is-disabled):focus{
+    background-color: rgba(0,0,0,.1);
+  }
+  .topmenu-container.el-menu--horizontal > .el-menu-item.is-active, .el-menu--horizontal > .el-submenu.is-active .el-submenu__title{
+        border: 0!important;
+  }
+  .topmenu-container{
+    background: inherit;
+    border: 0;
+    height: 50px;
+    line-height: 50px;
+
+    > .el-menu-item{
+      height: inherit!important;
+      line-height: inherit!important;
+      color: #FFFFFF!important;
+      padding: 0 12px!important;
+      margin:0 4px!important;
+       border: 0!important;
+      .svg-icon{
+        color:#fff;
+        fill: #fff;
+      }
+    }
+
+  }
+
+
+}
+
+  .el-dialog__header{
+       padding: 16px 24px 8px;
+
+  }
+
+  .el-dialog__body{
+    padding: 16px 32px;
+    .el-form-item__label{
+
+    }
+    .el-input-number--medium{
+      height: 32px;
+      line-height: 32px;
+      width: 100%;
+    }
+
+    .el-input--medium .el-input__inner{
+      height: 32px;
+      line-height: 32px;
+      padding: 0 8px;
+      text-align: left;
+    }
+    .el-form--label-top .el-form-item__label{
+      line-height: 1.5;
+      margin: 6px 0;
+    }
+
+    .el-textarea__inner{
+      font-family: "microsoft yahei";
+      padding: 8px;
+    }
+
+  }
+
+
+
+  .el-dialog__headerbtn{
+	  top: 16px;
+  }
+.el-dialog__footer {
+	  padding:8px  24px 16px;
+		.el-button--medium{
+		     font-size: 14px;
+		     line-height: 20px;
+		     padding: 5px 16px;
+		}
+	}
+	.el-textarea__inner{
+		box-sizing: border-box;
+		height: 64px;
+	}
+	.el-checkbox__inner::after{
+		left: 3px;
+		top: 0;
+	}
+  .sidebar-logo-container .sidebar-logo-link .sidebar-logo{
+    margin-right: 8px;
+  }
+  .sidebar-logo-container .sidebar-logo-link .sidebar-title{
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+}
+// 滚动条样式
+ html::-webkit-scrollbar {
+    width: 8px;
+}
+html::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    background: rgba(0,0,0,0.1);
+}
+html::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: rgba(0,0,0,0.04);
+
+}
+.el-table--scrollable-y .el-table__body-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+.el-table--scrollable-y .el-table__body-wrapper::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    background: rgba(0,0,0,0.2);
+}
+.el-table--scrollable-y .el-table__body-wrapper::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
+
+.el-input.is-active .el-input__inner, .el-input__inner:focus,
+.el-textarea__inner:focus,
+.el-checkbox__inner:hover{
+	box-sizing: border-box;
+}
+   .el-button{
+          border-color: #dadfe6;
+        }
+        .el-input__inner{
+          border-color: #dadfe6;
+        }
+        .el-textarea__inner{
+          border-color: #dadfe6;
+        }
+.el-dialog__body{
+  padding: 0!important;
+}
+
+.el-dialog__body{
+  .el-form--label-top .el-form-item__label{
+    padding: 0;
+  }
+}
+.el-dialog__header{
+   border-bottom: 1px solid #e8e8e8;
+    padding:12px 24px !important;
+}
+.el-dialog__title{
+   font-size: 14px!important;
+   font-weight: 600;
+}
+.el-dialog__footer{
+  padding:8px 24px !important;
+  border-top: 1px solid #e8e8e8;
+}
+
+.el-dialog__headerbtn{
+  top: 16px;
+}
+
+.el-input-number.is-controls-right .el-input__inner{
+  text-align: left;
+}
+.el-form-item--mini{
+       .el-form-item__label,
+        .el-form-item__content,
+       .el-avatar,
+       .el-cascader-panel,
+        .el-radio,
+        .el-radio--medium.is-bordered .el-radio__label,
+        .el-radio__label,
+       .el-checkbox__label,
+       .el-tree-node__label{
+          font-size: 12px;
+       }
+     }
+.el-form-item--small .el-form-item__error{
+  padding-top: 4px;
+  padding-left: 8px;
+}
+
+.el-icon-arrow-down {
+      font-size: 14px;
+    }
+.el-dialog__wrapper{
+  .el-dialog{
+    margin: 0 auto;
+    }
+}
+.el-popup-parent--hidden .main-container .fixed-header{
+  padding: 0;
+}
+.dialog-footer{
+  .el-button--small{
+          font-size: 14px;
+              padding: 8px 16px;
+        }
+
+}
+.icons-container {
+  .el-tabs__content{
+    padding: 0!important;
+  }
+  .el-input__suffix{
+ right: 24px!important;
+  }
+}
+#app .sidebar-container .router-link-exact-active{
+ border-right:2px solid  ;
+  background-color: #f7f9fa;
+}
+#app .sidebar-container .router-link-exact-active li.el-menu-item.is-active{
+    background-color: #f0f2f5!important;
+}
+.tableselect .el-tree-node__content{
+height: 32px!important;
+font-size: 14px!important;
+position: relative;
+padding-left: 8px!important;
+}
+.tableselect{
+  .el-tree-node__expand-icon.is-leaf{
+    display: none;
+  }
+.el-checkbox__input.is-checked+.el-checkbox__label{
+  color: #202d40;
+}
+  .drag-move{
+    position: absolute;
+    cursor: move;
+    right:8px;
+    color: #abb1bb;
+  }
+}
+
+.el-table__empty-text{
+  line-height: 32px!important;
+  padding: 0;
+  margin: 0!important;
+}
+.tableselect_btn{
+position: absolute;
+right: 12px;
+top: 8px;
+font-size: 14px!important;
+}
+.el-form-item__label{
+  font-weight: 600;
+}
+.el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before, .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before{
+  position: absolute;
+  left: 12px;
+}
+.el-dialog__body .el-form--label-top .el-form-item__label{
+  padding-left: 10px;
+}
