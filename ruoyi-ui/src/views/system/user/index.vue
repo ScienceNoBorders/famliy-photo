@@ -10,7 +10,7 @@
                 style="margin-bottom: 20px" />
 
               <el-tree :data="deptOptions" :props="defaultProps" :expand-on-click-node="false"
-                :filter-node-method="filterNode" ref="tree" default-expand-all @node-click="handleNodeClick" />
+                :filter-node-method="filterNode" ref="tree" default-expand-all highlight-current @node-click="handleNodeClick" />
             </div>
 
           </el-col>
