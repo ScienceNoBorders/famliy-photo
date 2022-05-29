@@ -105,13 +105,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js",
-                        "/profile/**"
+                        "/profile/**",
+                        "/**/*.map",
+                        "/**/*.woff",
+                        "/**/*.ttf",
+                        "/**/*.json",
+                        "/**/*.jpg",
+                        "/**/*.gif",
+                        "/**/*.png"
                 ).permitAll()
                 .antMatchers("/swagger-ui.html").anonymous()
                 .antMatchers("/swagger-resources/**").anonymous()
                 .antMatchers("/webjars/**").anonymous()
                 .antMatchers("/*/api-docs").anonymous()
                 .antMatchers("/druid/**").anonymous()
+                //flowable
+                .antMatchers("/app/rest/models/**").permitAll()
+                .antMatchers("/rest/models/**").permitAll()
+                .antMatchers("/flowable-task/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
