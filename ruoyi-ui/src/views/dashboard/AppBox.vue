@@ -89,12 +89,12 @@ export default {
         {
           icon: 'eye-fill',
           text: '操作日志',
-          path: '/system//log/operlog'
+          path: '/system/log/operlog'
         },
         {
           icon: 'logininfor',
           text: '登陆日志',
-          path: '/system/monitor/logininfor'
+          path: '/system/log/logininfor'
         },
         {
           icon: 'dashboard',

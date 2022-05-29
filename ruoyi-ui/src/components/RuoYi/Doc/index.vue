@@ -10,7 +10,7 @@ export default {
   name: 'RuoYiDoc',
   data() {
     return {
-      url: 'http://doc.ruoyi.vip/ruoyi-vue'
+      url: 'http://aidex.vip:8083/'
     }
   },
   methods: {
