@@ -9,7 +9,6 @@
                 <el-form-item label="角色名称"  prop="roleName">
                   <el-input
                     v-model="queryParams.roleName"
-                    style="width: 100%"
                     clearable
                     placeholder="请输入角色名称"
                     @keyup.enter.native="handleQuery"
@@ -21,7 +20,6 @@
                   <el-input
                     v-model="queryParams.roleKey"
                     clearable
-                    style="width: 100%"
                     placeholder="请输入权限字符"
                     @keyup.enter.native="handleQuery"
                   />
