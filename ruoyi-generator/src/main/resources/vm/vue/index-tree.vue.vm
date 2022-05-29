@@ -197,6 +197,10 @@
             >删除</el-button>
           </template>
         </el-table-column>
+        <div slot="empty">
+          <svg-icon icon-class="search-none" style="font-size: 64px;" />
+          <p>暂无数据</p>
+        </div>
       </el-table>
 
       <!-- 添加或修改${functionName}对话框 -->
