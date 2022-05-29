@@ -5,7 +5,7 @@
       <el-col :md="16" :lg="8" :xl="6">
         <el-card shadow="hover">
           <div style="height: 146px;">
-            <el-carousel trigger="click" height="146px">
+            <el-carousel trigger="click" height="146px" @click.native="linkTo" style="cursor:pointer">
               <el-carousel-item v-for="item in 2" :key="item" />
             </el-carousel>
           </div>
@@ -115,6 +115,9 @@ export default {
     },
     addTabMenu (path) {
       this.$router.push(path)
+    },
+    linkTo () {
+      window.open('http://aidex.vip')
     }
   }
 }
