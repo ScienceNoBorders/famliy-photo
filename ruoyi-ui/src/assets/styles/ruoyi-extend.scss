@@ -403,8 +403,11 @@ html::-webkit-scrollbar-track {
 .el-checkbox__inner:hover{
 	box-sizing: border-box;
 }
-   .el-button{
+        .el-button{
           border-color: #dadfe6;
+        }
+        .el-button--text{
+          border: 0;
         }
         .el-input__inner{
           border-color: #dadfe6;
