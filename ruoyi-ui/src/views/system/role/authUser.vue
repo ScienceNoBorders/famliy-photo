@@ -38,7 +38,7 @@
     </el-card>
     <el-card shadow="never" >
       <template #header>
-        <el-row :gutter="10" class="mb8">
+        <el-row>
           <el-col :span="8">
             <div class="card-header">
               <el-button disabled type="text">分配用户</el-button>
