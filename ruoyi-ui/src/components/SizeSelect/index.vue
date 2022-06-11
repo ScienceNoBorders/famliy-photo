@@ -16,10 +16,10 @@ export default {
   data() {
     return {
       sizeOptions: [
-        { label: 'Default', value: 'default' },
-        { label: 'Medium', value: 'medium' },
-        { label: 'Small', value: 'small' },
-        { label: 'Mini', value: 'mini' }
+        { label: '默认', value: 'default' },
+        { label: '较大', value: 'medium' },
+        { label: '稍小', value: 'small' },
+        { label: '迷你', value: 'mini' }
       ]
     }
   },
@@ -32,9 +32,10 @@ export default {
     handleSetSize(size) {
       this.$ELEMENT.size = size
       this.$store.dispatch('app/setSize', size)
+      this.$parent.$parent.$parent.$emit('reloadSize',size)
       this.refreshView()
       this.$message({
-        message: 'Switch Size Success',
+        message: '布局大小设置成功',
         type: 'success'
       })
     },
@@ -43,7 +44,6 @@ export default {
       this.$store.dispatch('tagsView/delAllCachedViews', this.$route)
 
       const { fullPath } = this.$route
-
       this.$nextTick(() => {
         this.$router.replace({
           path: '/redirect' + fullPath

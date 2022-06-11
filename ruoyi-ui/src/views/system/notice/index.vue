@@ -137,7 +137,7 @@
 
       <!-- 添加或修改公告对话框 -->
       <el-dialog :title="title" :visible.sync="open" width="720px" append-to-body>
-        <div style="height: 490px;overflow: auto; padding: 12px 24px;">
+        <div class="dialog_box">
           <el-form ref="form" :model="form" :rules="rules"  label-position="top">
             <el-row :gutter="24">
               <el-col :span="12">

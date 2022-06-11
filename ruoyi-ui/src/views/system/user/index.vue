@@ -1,10 +1,10 @@
 <template>
   <div class="app-container search-table-box aidex-table">
-    <el-card shadow="never">
-      <div style="">
+
         <el-row :gutter="20">
           <!--部门数据-->
           <el-col :span="4" :xs="24">
+            <el-card shadow="never" class="aidex-tree-box">
             <div style="margin: -10px;padding: 12px 12px 12px 6px;">
               <el-input v-model="deptName" placeholder="请输入部门名称" clearable prefix-icon="el-icon-search"
                 style="margin-bottom: 20px" />
@@ -12,13 +12,13 @@
               <el-tree :data="deptOptions" :props="defaultProps" :expand-on-click-node="false"
                 :filter-node-method="filterNode" ref="tree" default-expand-all highlight-current @node-click="handleNodeClick" />
             </div>
-
+          </el-card>
           </el-col>
           <!--用户数据-->
-          <el-col :span="20" :xs="24">
-            <div style="margin: -10px; margin-right: -16px;border-left: 1px solid #dadfe6;">
+          <el-col :span="20" :xs="24" style="padding:0 12px 0 0">
+            <el-card shadow="never" style="margin-bottom: 12px;border: 0;" class="search_card">
               <el-form :model="queryParams" ref="queryForm" label-width="80px" v-show="showSearch">
-                <div class="search_box" style="border-bottom:1px solid #E8E8E8 ;padding: 12px;padding-bottom: 0; ">
+                <div class="search_box">
                   <el-row>
                     <el-col :md="8">
                       <el-form-item label="用户名称" prop="userName">
@@ -32,8 +32,8 @@
                           @keyup.enter.native="handleQuery" />
                       </el-form-item>
                     </el-col>
-                    <el-col :md="8">
-                      <el-form-item label="状态" v-if="advanced" prop="status">
+                    <el-col :md="8" v-if="advanced">
+                      <el-form-item label="状态" prop="status">
                         <el-select @change="handleQuery" v-model="queryParams.status" placeholder="用户状态" size="small" style="width: 100%"
                           clearable>
                           <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
@@ -41,8 +41,8 @@
                         </el-select>
                       </el-form-item>
                     </el-col>
-                    <el-col :md="8">
-                      <el-form-item v-if="advanced" label="创建时间">
+                    <el-col :md="8" v-if="advanced">
+                      <el-form-item label="创建时间">
                         <el-date-picker v-model="dateRange" style="width: 100%" clearable value-format="yyyy-MM-dd"
                           type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
                         </el-date-picker>
@@ -61,7 +61,9 @@
                   </el-row>
                 </div>
               </el-form>
-              <div class="aidex-table-box" style="padding: 12px;">
+              </el-card>
+              <el-card shadow="never" class="aidex-tool-box">
+                <div class="aidex-table-box">
                 <el-row :gutter="8" class="mb8" style="">
                   <el-col :span="12">
                    <div class="card-header">
@@ -115,7 +117,7 @@
                       <el-divider direction="vertical"></el-divider>
                       <el-button type="text" style="color: red;" @click="handleDelete(scope.row)"
                         v-hasPermi="['system:user:remove']">删除</el-button>
-                         <el-divider direction="vertical"></el-divider>
+                      <el-divider direction="vertical"></el-divider>
                       <el-dropdown @command="(command) => handleCommand(command, scope.row)"
                         v-hasPermi="['system:user:resetPwd', 'system:user:edit']">
                         <span class="el-dropdown-link">
@@ -138,15 +140,14 @@
                 <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum"
                   :limit.sync="queryParams.pageSize" @pagination="getList" />
               </div>
-            </div>
+              </el-card>
           </el-col>
         </el-row>
-      </div>
-    </el-card>
+
 
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="720px" append-to-body>
-      <div style="height: 550px;overflow: auto; padding: 12px 24px;">
+      <div class="dialog_box" style="height:500px;">
         <el-form ref="form" :model="form" :rules="rules" label-position="top">
           <el-row :gutter="16">
             <el-col :span="12">
@@ -218,7 +219,7 @@
 
             <el-col :span="24">
               <el-form-item label="备注">
-                <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="请输入内容"></el-input>
+                <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入内容"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -232,12 +233,12 @@
 
     <!-- 用户导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
-      <el-upload ref="upload" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
+      <el-upload class="upload-model" ref="upload" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
         :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
         :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip text-center" slot="tip">
+        <div class="el-upload__tip text-center" slot="tip" style="margin-bottom: 10px;">
           <div class="el-upload__tip" slot="tip">
             <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
           </div>
@@ -283,7 +284,7 @@
       return {
         advanced: false,
         tableKey: 1,
-        tableHeight: "calc(100vh - 296px)",
+        tableHeight: this.getInitTableHeight(10),
         // 遮罩层
         loading: true,
         // 选中数组
@@ -666,3 +667,16 @@
     }
   };
 </script>
+<style lang="scss">
+ .aidex-tree-box{
+   height: calc(100vh - 112px);
+   border: 0;
+ }
+.aidex-tool-box{
+   border: 0!important;
+ }
+ .upload-model{
+   text-align: center;
+   padding-top: 10px;
+ }
+</style>

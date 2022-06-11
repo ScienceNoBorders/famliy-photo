@@ -159,25 +159,25 @@
 
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" :visible.sync="open" width="720px" append-to-body>
-        <div style="height: 330px;overflow: auto; padding: 12px 24px;">
+        <div class="dialog_box">
           <el-form ref="form" :model="form" :rules="rules" label-position="top">
             <el-row :gutter="24">
-              <el-col :span="12">
+              <el-col :span="24">
                 <el-form-item label="参数名称" prop="configName">
                   <el-input v-model="form.configName" placeholder="请输入参数名称" />
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="24">
                 <el-form-item label="参数键名" prop="configKey">
                   <el-input v-model="form.configKey" placeholder="请输入参数键名" />
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="24">
                 <el-form-item label="参数键值" prop="configValue">
                   <el-input v-model="form.configValue" placeholder="请输入参数键值" />
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="24">
                 <el-form-item label="系统内置" prop="configType">
                   <el-radio-group v-model="form.configType">
                     <el-radio-button
@@ -190,7 +190,7 @@
               </el-col>
               <el-col :span="24">
                 <el-form-item label="备注" prop="remark">
-                  <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="请输入内容" />
+                  <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入内容" />
                 </el-form-item>
               </el-col>
             </el-row>

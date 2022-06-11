@@ -80,13 +80,13 @@
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
         <el-table-column prop="deptName" label="部门名称" width="350"></el-table-column>
-        <el-table-column prop="orderNum" label="排序" width="250"></el-table-column>
+        <el-table-column prop="orderNum" label="排序" width="220"></el-table-column>
         <el-table-column prop="status" label="状态" width="200">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="370">
+        <el-table-column label="创建时间" align="center" prop="createTime" width="220">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
@@ -121,8 +121,8 @@
       </el-table>
 
       <!-- 添加或修改部门对话框 -->
-      <el-dialog :title="title" :visible.sync="open"  width="720px" append-to-body>
-        <div style="height: 450px;overflow: auto; padding: 12px 24px;">
+      <el-dialog :title="title" :visible.sync="open" width="720px" append-to-body>
+        <div class="dialog_box">
           <el-form ref="form" :model="form" :rules="rules" label-position="top">
             <el-row :gutter="16" >
               <el-col :span="24" v-if="form.parentId !== 0">
@@ -189,7 +189,7 @@ export default {
   components: { Treeselect },
   data() {
     return {
-      tableHeight: "calc(100vh - 272px)",
+      tableHeight: this.getInitTableHeight(45),
       // 遮罩层
       loading: true,
       // 显示搜索条件

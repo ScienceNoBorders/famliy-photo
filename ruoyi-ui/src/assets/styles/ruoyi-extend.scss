@@ -18,7 +18,13 @@
     }
   }
 }
-
+.dialog_box{
+  padding: 12px 24px;
+  overflow: auto;
+}
+.dialog_box .el-divider--horizontal{
+  margin: 12px 0;
+}
 /** 查询框样式 */
 .search_btn_box .el-form-item__content{
   margin: 0!important;
@@ -70,6 +76,10 @@
       padding: 16px;
   }
     .search_box{
+      .el-form-item__label{
+        font-weight: 600;
+        color: #606266;
+      }
       .filter-item{
         margin: 0;
       }
@@ -531,9 +541,59 @@ font-size: 14px!important;
   font-weight: 600;
 }
 .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before, .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before{
-  position: absolute;
-  left: 12px;
+  /* position: absolute;
+  left: 12px; */
 }
 .el-dialog__body .el-form--label-top .el-form-item__label{
   padding-left: 10px;
 }
+.el-select{
+      width: 100%;
+    }
+.el-dialog:not(.is-fullscreen) {
+    margin-top: 6vh!important;
+}
+.mini{
+      .el-menu .el-menu-item{
+        height: 32px;
+        line-height: 32px;
+        font-size: 12px!important;
+      }
+      .el-submenu__title{
+        height: 32px;
+        line-height: 32px;
+        font-size: 12px!important;
+      }
+      .el-breadcrumb__inner{
+        font-size: 12px;
+      }
+      .el-tree {
+      .el-tree-node__content{
+        height:22px;
+      }
+      .el-tree-node__label{
+      font-size: 12px;
+      }
+    }}
+    .large{
+      .el-tree{
+        .el-tree-node__content{
+          height:30px;
+        }
+      }
+    }
+    .small{
+      .tags-view-item{
+        font-size:14px!important;
+      }
+    }
+    .medium{
+      .tags-view-item{
+        font-size:14px!important;
+      }
+    }
+    .default{
+      .tags-view-item{
+        font-size:14px!important;
+      }
+    }

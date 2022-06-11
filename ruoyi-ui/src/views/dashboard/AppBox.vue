@@ -63,12 +63,12 @@ export default {
         {
           icon: 'dict',
           text: '字典管理',
-          path: 'system/dict'
+          path: '/system/dict'
         },
         {
           icon: 'settings-2-fill',
           text: '参数设置',
-          path: 'system/config'
+          path: '/system/config'
         },
         {
           icon: 'component',
@@ -164,11 +164,11 @@ export default {
     }
 
     .el-carousel__item:nth-child(4) {
-     background: url(banner2.png);
+     background: url(image/banner2.png);
     }
 
     .el-carousel__item:nth-child(3) {
-     background: url(banner.png);
+     background: url(image/banner.png);
     }
 
     .app_box{

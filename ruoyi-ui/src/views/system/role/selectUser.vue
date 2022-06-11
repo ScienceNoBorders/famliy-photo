@@ -1,71 +1,75 @@
 <template>
   <div class="aidex">
   <!-- 授权用户 -->
-  <el-dialog title="选择用户" :visible.sync="visible" width="800px" top="10vh" append-to-body>
-    <el-form :model="queryParams" ref="queryForm" label-width="80px">
-      <el-row :gutter="16">
-        <el-col :md="8">
-          <el-form-item label="用户名称" prop="userName">
-            <el-input
-              v-model="queryParams.userName"
-              placeholder="请输入用户名称"
-              clearable
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :md="8" >
-          <el-form-item label="手机号码" prop="phonenumber">
-            <el-input
-              v-model="queryParams.phonenumber"
-              placeholder="请输入手机号码"
-              clearable
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :md="8"  >
-          <el-form-item style="float: right;">
-            <el-button class="filter-item" type="primary" @click="handleQuery">搜索</el-button>
-            <el-button class="filter-item" @click="resetQuery" style="margin-left: 8px">重置</el-button>
-          </el-form-item>
-        </el-col>
+    <el-dialog title="选择用户" :visible.sync="visible" width="800px" top="10vh" append-to-body>
+      <el-form :model="queryParams" ref="queryForm" label-width="80px">
+        <el-row :gutter="16">
+          <el-col :md="8">
+            <el-form-item label="用户名称" prop="userName">
+              <el-input
+                v-model="queryParams.userName"
+                placeholder="请输入用户名称"
+                clearable
+                @keyup.enter.native="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :md="8">
+            <el-form-item label="手机号码" prop="phonenumber">
+              <el-input
+                v-model="queryParams.phonenumber"
+                placeholder="请输入手机号码"
+                clearable
+                @keyup.enter.native="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :md="8">
+            <el-form-item style="float: right;">
+              <el-button class="filter-item" type="primary" @click="handleQuery">搜索</el-button>
+              <el-button class="filter-item" @click="resetQuery" style="margin-left: 8px">重置</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <el-divider></el-divider>
+      <el-row>
+        <el-table @row-click="clickRow" ref="table" :data="userList" @selection-change="handleSelectionChange" height="320px">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
+          <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
+          <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
+          <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
+          <el-table-column label="状态" align="center" prop="status">
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+            </template>
+          </el-table-column>
+          <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.createTime) }}</span>
+            </template>
+          </el-table-column>
+          <div slot="empty">
+            <svg-icon icon-class="search-none" style="font-size: 64px;" />
+            <p>暂无数据</p>
+          </div>
+        </el-table>
+        <pagination
+          small
+          layout="prev, pager, next"
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
+        />
       </el-row>
-    </el-form>
- <el-divider></el-divider>
-    <el-row>
-      <el-table @row-click="clickRow" ref="table" :data="userList" @selection-change="handleSelectionChange" height="320px">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
-        <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
-        <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
-        <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
-        <el-table-column label="状态" align="center" prop="status">
-          <template slot-scope="scope">
-            <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-          <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.createTime) }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        small
-        layout="prev, pager, next"
-        v-show="total>0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
-      />
-    </el-row>
-    <div slot="footer"  class="dialog-footer">
-      <el-button type="primary" @click="handleSelectUser">确 定</el-button>
-      <el-button @click="visible = false">取 消</el-button>
-    </div>
-  </el-dialog>
+      <div slot="footer"  class="dialog-footer">
+        <el-button type="primary" @click="handleSelectUser">确 定</el-button>
+        <el-button @click="visible = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -149,18 +153,4 @@ export default {
   }
 };
 </script>
-<style>
-  .el-dialog__body{
-    padding: 16px 32px 0 !important;
-  }
-  .el-divider--horizontal{
-    margin: 0!important;
-  }
-  .pagination-container{
-    margin: 0;
-    padding: 8px!important;
-  }
-  .el-table-column--selection .cell{
-    padding: 0 8px!important;
-  }
-</style>
+

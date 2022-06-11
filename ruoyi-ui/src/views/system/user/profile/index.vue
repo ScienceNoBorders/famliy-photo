@@ -89,3 +89,8 @@ export default {
   }
 };
 </script>
+<style scoped  lang="scss">
+.list-group-item svg{
+ margin-right: 10px;
+}
+  </style>

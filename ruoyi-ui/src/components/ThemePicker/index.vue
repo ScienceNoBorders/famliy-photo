@@ -8,9 +8,9 @@
       popper-class="theme-picker-dropdown"
     />
     <span v-for="(color,index) in colorList" :key="index" style="display: inline-block;    width: 22px;
-    height: 22px;margin: 4px;
+    height: 22px;margin: 4px;vertical-align: top;
     ">
-    <el-tag :color="color" @click="setTheme(color)" >
+    <el-tag size="medium" :color="color" @click="setTheme(color)" >
       <svg style="margin-left: -4px;" v-if="defaultTheme == color" viewBox="64 64 896 896" data-icon="check" width="1em" height="1em" fill="#ffffff" aria-hidden="true"
            focusable="false" class="">
         <path
@@ -177,8 +177,8 @@ export default {
 }
 
 .theme-picker .el-color-picker__trigger {
-  height: 26px !important;
-  width: 26px !important;
+  height: 28px !important;
+  width: 28px !important;
   padding: 2px;
 }
 

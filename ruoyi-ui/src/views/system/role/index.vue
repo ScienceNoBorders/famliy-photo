@@ -185,8 +185,8 @@
       />
 
       <!-- 添加或修改角色配置对话框 -->
-      <el-dialog :title="title" :visible.sync="open" width="720px" top="10vh"  append-to-body>
-        <div style="height: 600px;overflow: auto; padding: 12px 24px;">
+      <el-dialog :title="title" :visible.sync="open" width="720px" append-to-body>
+        <div class="dialog_box"  style="height: 560px;">
           <el-form ref="form" :model="form" :rules="rules" label-position="top">
             <el-row :gutter="24">
               <el-col :span="12">
@@ -240,7 +240,7 @@
               </el-col>
               <el-col :span="24">
                 <el-form-item label="备注">
-                  <el-input v-model="form.remark" :rows="2" type="textarea" placeholder="请输入内容"></el-input>
+                  <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入内容"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -255,7 +255,7 @@
 
       <!-- 分配角色数据权限对话框 -->
       <el-dialog :title="title" :visible.sync="openDataScope" width="520px" append-to-body>
-        <div style="height: 400px;overflow: auto; padding: 12px 24px;">
+        <div class="dialog_box" style="height: 500px;">
           <el-form :model="form" label-position="top">
             <el-row :gutter="24">
               <el-col :span="24">
@@ -321,7 +321,7 @@ export default {
   data() {
     return {
       advanced: false,
-      tableHeight: "calc(100vh - 320px)",
+      tableHeight: this.getInitTableHeight(),
       // 遮罩层
       loading: true,
       // 选中数组

@@ -54,14 +54,16 @@
           <el-col :span="16">
             <div class="btn_box" align="right" style="float: right;">
               <el-button
-                class="filter-item" style="margin-left: 8px;"
+                class="filter-item"
+                style="margin-left: 8px;"
                 type="primary"
                 icon="el-icon-plus"
                 @click="handleAdd"
                 v-hasPermi="['system:menu:add']"
               >新增</el-button>
               <el-button
-                class="filter-item" style="margin-left: 8px;"
+                class="filter-item"
+                style="margin-left: 8px;"
                 icon="el-icon-sort"
                 @click="toggleExpandAll"
               >展开/折叠</el-button>
@@ -130,8 +132,8 @@
       </el-table>
 
       <!-- 添加或修改菜单对话框 -->
-      <el-dialog :title="title" :visible.sync="open"  width="720px" append-to-body>
-        <div style="height: 550px;overflow: auto; padding: 12px 24px;">
+      <el-dialog :title="title" :visible.sync="open" width="720px" append-to-body>
+        <div class="dialog_box" style="height: 525px;">
           <el-form ref="form" :model="form" :rules="rules" label-position="top">
             <el-row :gutter="24">
               <el-col :span="24">

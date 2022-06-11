@@ -139,6 +139,7 @@
             <el-divider direction="vertical"></el-divider>
             <el-button
               type="text"
+              @click="handleDelete(scope.row)"
               v-hasPermi="['tool:gen:remove']"
             >删除</el-button>
             <el-divider direction="vertical"></el-divider>

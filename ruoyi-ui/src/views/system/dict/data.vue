@@ -151,7 +151,7 @@
 
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" :visible.sync="open" width="720px" append-to-body>
-        <div style="height: 550px;overflow: auto; padding: 12px 24px;">
+        <div class="dialog_box">
           <el-form ref="form" :model="form" :rules="rules" label-position="top">
             <el-row :gutter="24">
               <el-col :span="12">
@@ -206,7 +206,7 @@
               </el-col>
               <el-col :span="24">
                 <el-form-item label="备注" prop="remark">
-                  <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="请输入内容"></el-input>
+                  <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入内容"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>

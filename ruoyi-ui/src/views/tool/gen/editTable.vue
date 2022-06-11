@@ -7,7 +7,6 @@
       <el-tab-pane label="字段信息" name="columnInfo">
         <el-table ref="dragTable" :data="columns" row-key="columnId" :max-height="tableHeight">
           <el-table-column type="index" min-width="5%" />
-
           <el-table-column header-align="center" label="字段">
             <el-table-column type="index" min-width="5%" class-name="allowDrag">
               <template slot-scope="scope">
@@ -123,7 +122,6 @@
                 </el-select>
               </template>
             </el-table-column>
-            
           </el-table-column>
         </el-table>
       </el-tab-pane>

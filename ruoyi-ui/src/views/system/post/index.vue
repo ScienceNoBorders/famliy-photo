@@ -132,7 +132,7 @@
 
       <!-- 添加或修改岗位对话框 -->
       <el-dialog :title="title" :visible.sync="open" width="520px" append-to-body>
-        <div style="height: 430px;overflow: auto; padding: 12px 24px;">
+        <div class="dialog_box">
           <el-form ref="form" :model="form" :rules="rules" label-position="top">
             <el-row :gutter="24">
               <el-col :span="24">
@@ -163,7 +163,7 @@
               </el-col>
               <el-col :span="24">
                 <el-form-item label="备注" prop="remark">
-                  <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="请输入内容" />
+                  <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入内容" />
                 </el-form-item>
               </el-col>
             </el-row>

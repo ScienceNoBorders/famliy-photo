@@ -160,7 +160,7 @@
 
       <!-- 调度日志详细 -->
       <el-dialog title="调度日志详细" :visible.sync="open" width="700px" append-to-body>
-        <div style="height: 400px;overflow: auto; padding: 12px 24px;">
+        <div class="dialog_box">
           <el-form ref="form" :model="form" label-position="top">
             <el-row :gutter="16">
               <el-col :span="12">
