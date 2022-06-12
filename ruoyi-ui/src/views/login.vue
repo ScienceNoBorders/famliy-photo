@@ -60,7 +60,7 @@
         <!--  底部  -->
         <!-- 侧栏 -->
         <div class="side-bg">
-          <h4 class="side-text">欢迎使用-若依后台管理系统</h4>
+          <h4 class="side-text">欢迎使用-若依后台管理系统（Vue2-Element）</h4>
           <ul class="side-item">
             <li><i class="el-icon-right"></i> SpringBoot</li>
             <li><i class="el-icon-right"></i> Vue</li>
@@ -78,7 +78,7 @@
     <el-tab-pane label="登录页二" name="second" class="wrapper-box02">
       <div class="login">
         <div class="side-bg leftsidebg">
-          <h4 class="side-text">欢迎使用-若依后台管理系统</h4>
+          <h4 class="side-text">欢迎使用-若依后台管理系统（Vue2-Element）</h4>
           <ul class="side-item">
             <li><i class="el-icon-right"></i> SpringBoot</li>
             <li><i class="el-icon-right"></i> Vue</li>
@@ -158,7 +158,7 @@
       <div class="login">
         <div class="login-logo">
           <div class="login-logo-img03"></div>
-          欢迎使用-若依后台管理系统
+          欢迎使用-若依后台管理系统（Vue2-Element）
           </div>
           <div class="login-box03">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
