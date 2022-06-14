@@ -384,14 +384,14 @@
   }
 }
 // 滚动条样式
- html::-webkit-scrollbar {
+ *::-webkit-scrollbar {
     width: 8px;
 }
-html::-webkit-scrollbar-thumb {
+ *::-webkit-scrollbar-thumb {
     border-radius: 0px;
     background: rgba(0,0,0,0.1);
 }
-html::-webkit-scrollbar-track {
+ *::-webkit-scrollbar-track {
     border-radius: 0;
     background: rgba(0,0,0,0.04);
 
