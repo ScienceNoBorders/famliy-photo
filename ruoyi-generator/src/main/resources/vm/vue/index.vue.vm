@@ -7,17 +7,17 @@
             <el-row :gutter="16">
 #set($queryCount=0)
 #foreach($column in $columns)
-#if($column.query)
-#set($dictType=$column.dictType)
-#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
-#if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
-#else
-#set($comment=$column.columnComment)
-#end
-#if($column.htmlType == "input")
-#set($queryCount=$queryCount + 1)
+    #if($column.query)
+        #set($dictType=$column.dictType)
+        #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+        #set($parentheseIndex=$column.columnComment.indexOf("（"))
+        #if($parentheseIndex != -1)
+            #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+        #else
+            #set($comment=$column.columnComment)
+        #end
+        #if($column.htmlType == "input")
+            #set($queryCount=$queryCount + 1)
               <el-col :md="6" #if( $queryCount > 3 )v-if="advanced"#end>
                 <el-form-item label="${comment}" prop="${column.javaField}">
                   <el-input
@@ -29,10 +29,10 @@
                 </el-form-item>
               </el-col>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
-#set($queryCount=$queryCount + 1)
+            #set($queryCount=$queryCount + 1)
               <el-col :md="6" #if( $queryCount > 3 )v-if="advanced"#end>
                 <el-form-item label="${comment}" prop="${column.javaField}">
-                  <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable style="width: 100%;">
+                  <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" @change="handleQuery" clearable style="width: 100%;">
                     <el-option
                       v-for="dict in dict.type.${dictType}"
                       :key="dict.value"
@@ -43,16 +43,16 @@
                 </el-form-item>
               </el-col>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
-#set($queryCount=$queryCount + 1)
+            #set($queryCount=$queryCount + 1)
               <el-col :md="6" #if( $queryCount > 3 )v-if="advanced"#end>
                 <el-form-item label="${comment}" prop="${column.javaField}">
-                  <el-select v-model="queryParams.${column.javaField}" style="width: 100%" placeholder="请选择${comment}" clearable style="width: 100%;">
+                  <el-select v-model="queryParams.${column.javaField}" style="width: 100%" placeholder="请选择${comment}" @change="handleQuery" clearable style="width: 100%;">
                     <el-option label="请选择字典生成" value="" />
                   </el-select>
                 </el-form-item>
               </el-col>
 #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
-#set($queryCount=$queryCount + 1)
+            #set($queryCount=$queryCount + 1)
               <el-col :md="6" #if( $queryCount > 3 )v-if="advanced"#end>
                 <el-form-item label="${comment}" prop="${column.javaField}">
                   <el-date-picker clearable
@@ -64,7 +64,7 @@
                 </el-form-item>
               </el-col>
 #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
-#set($queryCount=$queryCount + 1)
+            #set($queryCount=$queryCount + 1)
               <el-col :md="6" #if( $queryCount > 3 )v-if="advanced"#end>
                 <el-form-item label="${comment}">
                   <el-date-picker
@@ -79,12 +79,12 @@
                 </el-form-item>
               </el-col>
 #end
-#end
+    #end
 #end
               <el-col :md="6" align="right" style="float: right;">
                 <el-form-item>
-                  <el-button class="filter-item" @click="handleQuery" type="primary">搜索</el-button>
-                  <el-button class="filter-item" @click="resetQuery" style="margin-left: 8px;">重置</el-button>
+                  <el-button class="filter-item" type="primary" @click="handleQuery">搜索</el-button>
+                  <el-button class="filter-item" style="margin-left: 8px" @click="resetQuery">重置</el-button>
 #if($queryCount > 3)
                   <a @click="toggleAdvanced" style="margin:0 4px 0 8px ;vertical-align: middle;">
                     {{ advanced ? '收起' : '展开' }}
@@ -98,7 +98,6 @@
         </div>
       </div>
     </el-card>
-
     <el-card shadow="never" >
       <template #header>
         <el-row>
@@ -110,13 +109,16 @@
           <el-col :span="16">
             <div class="btn_box" align="right" style="float: right;">
               <el-button
+                class="filter-item"
+                style="margin-left: 8px;"
                 type="primary"
                 icon="el-icon-plus"
-                style="margin-left: 8px;"
                 @click="handleAdd"
                 v-hasPermi="['${moduleName}:${businessName}:add']"
               >新增</el-button>
               <el-button
+                class="filter-item"
+                style="margin-left: 8px;"
                 icon="el-icon-delete"
                 type="danger"
                 :disabled="multiple"
@@ -125,8 +127,9 @@
                 v-hasPermi="['${moduleName}:${businessName}:remove']"
               >删除</el-button>
               <el-button
-                icon="el-icon-download"
+                class="filter-item"
                 style="margin-left: 8px;"
+                icon="el-icon-download"
                 @click="handleExport"
                 v-hasPermi="['${moduleName}:${businessName}:export']"
               >导出</el-button>
@@ -139,14 +142,14 @@
       <el-table stripe ref="tableRef" v-loading="loading" :data="${businessName}List" @selection-change="handleSelectionChange" highlight-current-row style="width: 100%;" :height="tableHeight">
         <el-table-column type="selection" width="55" align="center" />
 #foreach($column in $columns)
-#set($javaField=$column.javaField)
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
-#if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
-#else
-#set($comment=$column.columnComment)
-#end
-#if($column.pk)
+    #set($javaField=$column.javaField)
+    #set($parentheseIndex=$column.columnComment.indexOf("（"))
+    #if($parentheseIndex != -1)
+        #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+    #else
+        #set($comment=$column.columnComment)
+    #end
+    #if($column.pk)
         <el-table-column label="${comment}" align="center" prop="${javaField}" />
 #elseif($column.list && $column.htmlType == "datetime")
         <el-table-column label="${comment}" align="center" prop="${javaField}" width="180">
@@ -209,17 +212,17 @@
           <el-form ref="form" :model="form" :rules="rules" label-position="top">
             <el-row :gutter="24">
 #foreach($column in $columns)
-#set($field=$column.javaField)
-#if($column.insert && !$column.pk)
-#if(($column.usableColumn) || (!$column.superColumn))
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
-#if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
-#else
-#set($comment=$column.columnComment)
-#end
-#set($dictType=$column.dictType)
-#if($column.htmlType == "input")
+    #set($field=$column.javaField)
+    #if($column.insert && !$column.pk)
+        #if(($column.usableColumn) || (!$column.superColumn))
+            #set($parentheseIndex=$column.columnComment.indexOf("（"))
+            #if($parentheseIndex != -1)
+                #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+            #else
+                #set($comment=$column.columnComment)
+            #end
+            #set($dictType=$column.dictType)
+            #if($column.htmlType == "input")
               <el-col :span="12">
                 <el-form-item label="${comment}" prop="${field}">
                   <el-input v-model="form.${field}" placeholder="请输入${comment}" />
@@ -293,7 +296,7 @@
               <el-col :span="12">
                 <el-form-item label="${comment}">
                   <el-radio-group v-model="form.${field}">
-                    <el-radio
+                    <el-radio-button
                       v-for="dict in dict.type.${dictType}"
                       :key="dict.value"
 #if($column.javaType == "Integer" || $column.javaType == "Long")
@@ -301,7 +304,7 @@
 #else
                       :label="dict.value"
 #end
-                    >{{dict.label}}</el-radio>
+                    >{{dict.label}}</el-radio-button>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -332,8 +335,8 @@
                 </el-form-item>
               </el-col>
 #end
-#end
-#end
+        #end
+    #end
 #end
 #if($table.sub)
               <el-col :span="24">
@@ -344,19 +347,19 @@
                 <el-button type="danger" icon="el-icon-delete" @click="handleDelete${subClassName}">删除</el-button>
               </el-col>
               <el-col :span="24">
-                <el-table :data="${subclassName}List" :row-class-name="row${subClassName}Index" @selection-change="handle${subClassName}SelectionChange" ref="${subclassName}">
+                <el-table :data="${subclassName}List" :row-class-name="row${subClassName}Index" @selection-change="handle${subClassName}SelectionChange" style="width: 100%" height="300px" ref="${subclassName}">
                   <el-table-column type="selection" width="50" align="center" />
                   <el-table-column label="序号" align="center" prop="index" width="50"/>
 #foreach($column in $subTable.columns)
-#set($javaField=$column.javaField)
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
-#if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
-#else
-#set($comment=$column.columnComment)
-#end
-#if($column.pk || $javaField == ${subTableFkclassName})
-#elseif($column.list && $column.htmlType == "input")
+    #set($javaField=$column.javaField)
+    #set($parentheseIndex=$column.columnComment.indexOf("（"))
+    #if($parentheseIndex != -1)
+        #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+    #else
+        #set($comment=$column.columnComment)
+    #end
+    #if($column.pk || $javaField == ${subTableFkclassName})
+    #elseif($column.list && $column.htmlType == "input")
                   <el-table-column label="$comment" prop="${javaField}" width="150">
                     <template slot-scope="scope">
                       <el-input v-model="scope.row.$javaField" placeholder="请输入$comment" />
@@ -392,12 +395,11 @@
 #end
 #end
                 </el-table>
-#end
               </el-col>
+#end
             </el-row>
           </el-form>
         </div>
-
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="submitForm">确 定</el-button>
           <el-button @click="cancel">取 消</el-button>
@@ -417,8 +419,10 @@ export default {
 #end
   data() {
     return {
+#if( $queryCount > 3 )
       advanced: false,
-      tableHeight: "calc(100vh - 306px)",
+#end
+      tableHeight: this.getInitTableHeight(),
       // 遮罩层
       loading: true,
       // 选中数组
@@ -446,8 +450,8 @@ export default {
       // 是否显示弹出层
       open: false,
 #foreach ($column in $columns)
-#if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
-#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+    #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+        #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
       // $comment时间范围
       daterange${AttrName}: [],
 #end
@@ -457,9 +461,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
 #foreach ($column in $columns)
-#if($column.query)
+    #if($column.query)
         $column.javaField: null#if($foreach.count != $columns.size()),#end
-#end
+    #end
 #end
       },
       // 表单参数
@@ -467,17 +471,17 @@ export default {
       // 表单校验
       rules: {
 #foreach ($column in $columns)
-#if($column.required)
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
-#if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
-#else
-#set($comment=$column.columnComment)
-#end
+    #if($column.required)
+        #set($parentheseIndex=$column.columnComment.indexOf("（"))
+        #if($parentheseIndex != -1)
+            #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+        #else
+            #set($comment=$column.columnComment)
+        #end
         $column.javaField: [
           { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select")"change"#else"blur"#end }
         ]#if($foreach.count != $columns.size()),#end
-#end
+    #end
 #end
       }
     };
@@ -486,7 +490,8 @@ export default {
     this.getList();
   },
   methods: {
-    showSearchFun(isShowSearch){
+   /** 隐藏搜索按钮操作 */
+   showSearchFun(isShowSearch){
       this.showSearch = isShowSearch
       let oldHeight = this.$refs.queryRef.$el.offsetHeight
       if(!isShowSearch){
@@ -499,6 +504,8 @@ export default {
          this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
       ))
     },
+#if( $queryCount > 3 )
+    /** 展开按钮操作 */
     toggleAdvanced() {
       const oldHeight = this.$refs.queryRef.$el.offsetHeight
       this.advanced = !this.advanced
@@ -506,18 +513,19 @@ export default {
          this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
       ))
     },
+#end
     /** 查询${functionName}列表 */
     getList() {
       this.loading = true;
 #foreach ($column in $columns)
-#if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+    #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
       this.queryParams.params = {};
 #break
-#end
+    #end
 #end
 #foreach ($column in $columns)
-#if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
-#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+    #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+        #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
       if (null != this.daterange${AttrName} && '' != this.daterange${AttrName}) {
         this.queryParams.params["begin${AttrName}"] = this.daterange${AttrName}[0];
         this.queryParams.params["end${AttrName}"] = this.daterange${AttrName}[1];
@@ -539,13 +547,13 @@ export default {
     reset() {
       this.form = {
 #foreach ($column in $columns)
-#if($column.htmlType == "radio")
+    #if($column.htmlType == "radio")
         $column.javaField: #if($column.javaType == "Integer" || $column.javaType == "Long")0#else"0"#end#if($foreach.count != $columns.size()),#end
-#elseif($column.htmlType == "checkbox")
+    #elseif($column.htmlType == "checkbox")
         $column.javaField: []#if($foreach.count != $columns.size()),#end
-#else
+    #else
         $column.javaField: null#if($foreach.count != $columns.size()),#end
-#end
+    #end
 #end
       };
 #if($table.sub)
@@ -561,8 +569,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
 #foreach ($column in $columns)
-#if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
-#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+    #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+        #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
       this.daterange${AttrName} = [];
 #end
 #end
@@ -588,7 +596,7 @@ export default {
       get${BusinessName}(${pkColumn.javaField}).then(response => {
         this.form = response.data;
 #foreach ($column in $columns)
-#if($column.htmlType == "checkbox")
+    #if($column.htmlType == "checkbox")
         this.form.$column.javaField = this.form.${column.javaField}.split(",");
 #end
 #end
