@@ -186,7 +186,7 @@ export default {
   dicts: ['sys_normal_disable'],
   data() {
     return {
-      tableHeight: "calc(100vh - 320px)",
+      tableHeight: this.getInitTableHeight(),
       // 遮罩层
       loading: true,
       // 选中数组
