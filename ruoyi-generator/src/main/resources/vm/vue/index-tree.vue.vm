@@ -32,7 +32,7 @@
 #set($queryCount=$queryCount + 1)
               <el-col :md="6" #if( $queryCount > 3 )v-if="advanced"#end>
                 <el-form-item label="${comment}" prop="${column.javaField}">
-                  <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable style="width: 100%;">
+                  <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" @change="handleQuery" clearable style="width: 100%;">
                     <el-option
                       v-for="dict in dict.type.${dictType}"
                       :key="dict.value"
@@ -46,7 +46,7 @@
 #set($queryCount=$queryCount + 1)
               <el-col :md="6" #if( $queryCount > 3 )v-if="advanced"#end>
                 <el-form-item label="${comment}" prop="${column.javaField}">
-                  <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable style="width: 100%;">
+                  <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" @change="handleQuery" clearable style="width: 100%;">
                     <el-option label="请选择字典生成" value="" />
                   </el-select>
                 </el-form-item>
@@ -58,6 +58,7 @@
                   <el-date-picker clearable
                     v-model="queryParams.${column.javaField}"
                     type="date"
+                    style="width: 100%;"
                     value-format="yyyy-MM-dd"
                     placeholder="选择${comment}">
                   </el-date-picker>
@@ -184,11 +185,13 @@
               @click="handleUpdate(scope.row)"
               v-hasPermi="['${moduleName}:${businessName}:edit']"
             >修改</el-button>
+            <el-divider direction="vertical"></el-divider>
             <el-button
               type="text"
               @click="handleAdd(scope.row)"
               v-hasPermi="['${moduleName}:${businessName}:add']"
             >新增</el-button>
+            <el-divider direction="vertical"></el-divider>
             <el-button
               type="text"
               style="color: red;"
@@ -220,7 +223,7 @@
 #end
 #set($dictType=$column.dictType)
 #if("" != $treeParentCode && $column.javaField == $treeParentCode)
-              <el-col :span="12">
+              <el-col :span="24">
                 <el-form-item label="${comment}" prop="${treeParentCode}">
                   <treeselect v-model="form.${treeParentCode}" :options="${businessName}Options" :normalizer="normalizer" placeholder="请选择${comment}" />
                 </el-form-item>
@@ -299,7 +302,7 @@
               <el-col :span="12">
                 <el-form-item label="${comment}">
                   <el-radio-group v-model="form.${field}">
-                    <el-radio
+                    <el-radio-button
                       v-for="dict in dict.type.${dictType}"
                       :key="dict.value"
 #if($column.javaType == "Integer" || $column.javaType == "Long")
@@ -307,7 +310,7 @@
 #else
                       :label="dict.value"
 #end
-                    >{{dict.label}}</el-radio>
+                    >{{dict.label}}</el-radio-button>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -368,8 +371,10 @@ export default {
   },
   data() {
     return {
+#if( $queryCount > 3 )
       advanced: false,
-      tableHeight: "calc(100vh - 262px)",
+#end
+      tableHeight: this.getInitTableHeight(45),
       // 遮罩层
       loading: true,
       // 显示搜索条件
@@ -425,7 +430,9 @@ export default {
     this.getList();
   },
   methods: {
-    showSearchFun(isShowSearch){
+
+   /** 隐藏搜索按钮操作 */
+   showSearchFun(isShowSearch){
       this.showSearch = isShowSearch
       let oldHeight = this.$refs.queryRef.$el.offsetHeight
       if(!isShowSearch){
@@ -438,6 +445,8 @@ export default {
          this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
       ))
     },
+#if( $queryCount > 3 )
+    /** 展开按钮操作 */
     toggleAdvanced() {
       const oldHeight = this.$refs.queryRef.$el.offsetHeight
       this.advanced = !this.advanced
@@ -445,6 +454,7 @@ export default {
          this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
       ))
     },
+#end
     /** 查询${functionName}列表 */
     getList() {
       this.loading = true;
@@ -479,7 +489,7 @@ export default {
         children: node.children
       };
     },
-	/** 查询${functionName}下拉树结构 */
+    /** 查询${functionName}下拉树结构 */
     getTreeselect() {
       list${BusinessName}().then(response => {
         this.${businessName}Options = [];
@@ -499,7 +509,6 @@ export default {
 #foreach ($column in $columns)
 #if($column.htmlType == "radio")
         $column.javaField: #if($column.javaType == "Integer" || $column.javaType == "Long")0#else"0"#end#if($foreach.count != $columns.size()),#end
-
 #elseif($column.htmlType == "checkbox")
         $column.javaField: []#if($foreach.count != $columns.size()),#end
 #else
