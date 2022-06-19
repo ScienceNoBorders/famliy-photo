@@ -159,7 +159,7 @@ export default {
   data() {
     return {
       advanced: false,
-      tableHeight: "calc(100vh - 320px)",
+      tableHeight: this.getInitTableHeight(),
       // 遮罩层
       loading: true,
       // 选中数组

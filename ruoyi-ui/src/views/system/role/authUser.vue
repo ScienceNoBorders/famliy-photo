@@ -127,7 +127,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
-      tableHeight: "calc(100vh - 316px)",
+      tableHeight: this.getInitTableHeight(),
       // 选中用户组
       userIds: [],
       // 非多个禁用

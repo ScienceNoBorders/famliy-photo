@@ -204,7 +204,7 @@ export default {
   components: { importTable },
   data() {
     return {
-      tableHeight: "calc(100vh - 320px)",
+      tableHeight: this.getInitTableHeight(),
       // 遮罩层
       loading: true,
       // 唯一标识符

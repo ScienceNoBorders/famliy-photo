@@ -318,7 +318,7 @@ export default {
   components: { Treeselect, IconSelect },
   data() {
     return {
-      tableHeight: "calc(100vh - 272px)",
+      tableHeight: this.getInitTableHeight(45),
       // 遮罩层
       loading: true,
       // 显示搜索条件
