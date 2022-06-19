@@ -253,6 +253,7 @@ export default {
     }
   },
   methods: {
+		/** 隐藏搜索按钮操作 */
     showSearchFun(isShowSearch){
       this.showSearch = isShowSearch
       let oldHeight = this.$refs.queryRef.$el.offsetHeight

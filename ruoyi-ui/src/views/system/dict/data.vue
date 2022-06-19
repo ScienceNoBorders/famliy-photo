@@ -311,6 +311,7 @@ export default {
     this.getTypeList();
   },
   methods: {
+		/** 隐藏搜索按钮操作 */
     showSearchFun(isShowSearch){
       this.showSearch = isShowSearch
       let oldHeight = this.$refs.queryRef.$el.offsetHeight
@@ -324,6 +325,7 @@ export default {
          this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
       ))
     },
+		/** 展开按钮操作 */
     toggleAdvanced() {
       const oldHeight = this.$refs.queryRef.$el.offsetHeight
       this.advanced = !this.advanced

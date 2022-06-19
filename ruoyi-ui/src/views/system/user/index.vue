@@ -444,6 +444,7 @@
       });
     },
     methods: {
+			/** 隐藏搜索按钮操作 */
       showSearchFun(isShowSearch){
         this.showSearch = isShowSearch
         let oldHeight = this.$refs.queryForm.$el.offsetHeight
@@ -457,6 +458,7 @@
            this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryForm.$el.offsetHeight-oldHeight)
         ))
       },
+			/** 展开按钮操作 */
       toggleAdvanced() {
         const oldHeight = this.$refs.queryForm.$el.offsetHeight
         this.advanced = !this.advanced
