@@ -235,6 +235,7 @@ export async function blobValidate(data) {
   }
 }
 
+// 计算页面高度
 export function getInitTableHeight(height) {
   if(height == null || height== '' || height == undefined){
     height = 0;
