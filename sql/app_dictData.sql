@@ -1,0 +1,13 @@
+INSERT INTO `sys_dict_data` VALUES (29, 10, '一般会员', '1', 'demo_user_type', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:46:37', 'admin', '2022-6-18 13:46:49', NULL);
+INSERT INTO `sys_dict_data` VALUES (30, 10, '超级会员', '2', 'demo_user_type', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:46:57', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (31, 10, 'VIP会员', '3', 'demo_user_type', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:47:05', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (32, 10, '铂金会员', '4', 'demo_user_type', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:47:12', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (33, 10, '超级黑卡', '5', 'demo_user_type', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:47:20', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (34, 10, '高富帅', '1', 'demo_user_label', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:51:01', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (35, 10, '富二代', '2', 'demo_user_label', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:51:07', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (36, 10, '屌丝', '3', 'demo_user_label', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:51:17', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (37, 10, '幽默', '4', 'demo_user_label', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:51:27', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (38, 10, '内敛', '5', 'demo_user_label', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:51:35', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (39, 10, '风趣', '6', 'demo_user_label', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:51:46', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (40, 10, '沉稳', '7', 'demo_user_label', NULL, 'default', 'N', '0', 'admin', '2022-6-18 13:51:58', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (41, 10, '黑金超级VIP', '6', 'demo_user_type', NULL, 'default', 'N', '0', 'admin', '2022-6-18 17:14:37', '', NULL, NULL);
