@@ -3,7 +3,7 @@ ruoyi:
   # 名称
   name: RuoYi
   # 版本
-  version: 3.8.2
+  version: 3.8.3
   # 版权年份
   copyrightYear: 2022
   # 实例演示开关
@@ -58,7 +58,7 @@ spring:
   devtools:
     restart:
       # 热部署开关
-      enabled: false
+      enabled: true
   # redis 配置
   redis:
     # 地址

@@ -22,7 +22,7 @@ import com.ruoyi.system.service.ISysConfigService;
 
 /**
  * 验证码操作处理
- *
+ * 
  * @author ruoyi
  */
 @RestController
@@ -36,7 +36,7 @@ public class CaptchaController
 
     @Autowired
     private RedisCache redisCache;
-
+    
     @Autowired
     private ISysConfigService configService;
     /**
@@ -46,9 +46,9 @@ public class CaptchaController
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {
         AjaxResult ajax = AjaxResult.success();
-        boolean captchaOnOff = configService.selectCaptchaOnOff();
-        ajax.put("captchaOnOff", captchaOnOff);
-        if (!captchaOnOff)
+        boolean captchaEnabled = configService.selectCaptchaEnabled();
+        ajax.put("captchaEnabled", captchaEnabled);
+        if (!captchaEnabled)
         {
             return ajax;
         }

@@ -22,19 +22,24 @@
           <el-form :model="queryParams" ref="queryForm" label-width="80px" v-show="showSearch">
             <div class="search_box">
               <el-row>
-                <el-col :md="8">
+                <el-col :md="6">
                   <el-form-item label="用户名称" prop="userName">
                     <el-input v-model="queryParams.userName" placeholder="请输入用户名称" style="width: 100%" clearable
                       @keyup.enter.native="handleQuery" />
                   </el-form-item>
                 </el-col>
-                <el-col :md="8">
+                <el-col :md="6">
+                  <el-form-item label="归属部门" prop="deptId">
+                    <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" />
+                  </el-form-item>
+                </el-col>
+                <el-col :md="6">
                   <el-form-item label="手机号码" prop="phonenumber">
                     <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" style="width: 100%" clearable
                       @keyup.enter.native="handleQuery" />
                   </el-form-item>
                 </el-col>
-                <el-col :md="8" v-if="advanced">
+                <el-col :md="6" v-if="advanced">
                   <el-form-item label="状态" prop="status">
                     <el-select @change="handleQuery" v-model="queryParams.status" placeholder="用户状态" size="small" style="width: 100%"
                       clearable>
@@ -43,14 +48,14 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :md="8" v-if="advanced">
+                <el-col :md="6" v-if="advanced">
                   <el-form-item label="创建时间">
                     <el-date-picker v-model="dateRange" style="width: 100%" clearable value-format="yyyy-MM-dd"
                       type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
                     </el-date-picker>
                   </el-form-item>
                 </el-col>
-                <el-col :md="8" align="right" style="float: right;">
+                <el-col :md="6" align="right" style="float: right;">
                   <el-form-item>
                     <el-button class="filter-item" type="primary" @click="handleQuery">搜索</el-button>
                     <el-button class="filter-item" style="margin-left: 8px" @click="resetQuery">重置</el-button>
