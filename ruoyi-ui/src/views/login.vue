@@ -27,7 +27,7 @@
             >
             </el-input>
           </el-form-item>
-          <el-form-item v-if="captchaOnOff" label="验证码">
+          <el-form-item v-if="captchaEnabled" label="验证码">
             <el-input
               label-position="top"
               v-model="loginForm.code"
@@ -116,7 +116,7 @@
             >
             </el-input>
           </el-form-item>
-          <el-form-item v-if="captchaOnOff">
+          <el-form-item v-if="captchaEnabled">
             <el-input
               label-position="top"
               v-model="loginForm.code"
@@ -184,7 +184,7 @@
             >
             </el-input>
           </el-form-item>
-          <el-form-item v-if="captchaOnOff">
+          <el-form-item v-if="captchaEnabled">
             <el-input
               label-position="top"
               v-model="loginForm.code"
@@ -256,7 +256,7 @@ export default {
       },
       loading: false,
       // 验证码开关
-      captchaOnOff: true,
+      captchaEnabled: true,
       // 注册开关
       register: false,
       redirect: undefined
@@ -280,8 +280,8 @@ export default {
     },
     getCode() {
       getCodeImg().then(res => {
-        this.captchaOnOff = res.captchaOnOff === undefined ? true : res.captchaOnOff;
-        if (this.captchaOnOff) {
+        this.captchaEnabled = res.captchaEnabled === undefined ? true : res.captchaEnabled;
+        if (this.captchaEnabled) {
           this.codeUrl = "data:image/gif;base64," + res.img;
           this.loginForm.uuid = res.uuid;
         }
@@ -314,7 +314,7 @@ export default {
             this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
           }).catch(() => {
             this.loading = false;
-            if (this.captchaOnOff) {
+            if (this.captchaEnabled) {
               this.getCode();
             }
           });
