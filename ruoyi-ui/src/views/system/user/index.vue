@@ -9,7 +9,12 @@
           </div>
           <div style="padding:0px 0 0px 12px;">
             <el-tree :data="deptOptions" :props="defaultProps" :expand-on-click-node="false"
-              :filter-node-method="filterNode" ref="tree" default-expand-all highlight-current @node-click="handleNodeClick"
+              :filter-node-method="filterNode"
+              ref="tree"
+              node-key="id"
+              default-expand-all
+              highlight-current
+              @node-click="handleNodeClick"
               :style="{height:treeHeight}"
               style="width: 100%;overflow-y: auto;"
             />
@@ -525,6 +530,8 @@ export default {
     resetQuery() {
       this.dateRange = [];
       this.resetForm("queryForm");
+      this.queryParams.deptId = undefined;
+      this.$refs.tree.setCurrentKey(null);
       this.handleQuery();
     },
     // 多选框选中数据
