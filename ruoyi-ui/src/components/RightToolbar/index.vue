@@ -1,7 +1,7 @@
 <template>
-  <div class="top-right-btn">
+  <div class="top-right-btn" :style="style">
     <el-row >
-      <el-tooltip class="item" effect="dark" :content="showSearch ? '隐藏搜索' : '显示搜索'" placement="top">
+      <el-tooltip class="item" effect="dark" :content="showSearch ? '隐藏搜索' : '显示搜索'" placement="top" v-if="search">
         <svg-icon icon-class="search-2-line" @click="toggleSearch()"/>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -59,6 +59,14 @@ export default {
     columns: {
       type: Array,
     },
+    search: {
+      type: Boolean,
+      default: true,
+    },
+    gutter: {
+      type: Number,
+      default: 10,
+    },
     tableKey: {
       type: Number
     }
@@ -68,6 +76,15 @@ export default {
     if (null != localColumns && typeof (localColumns) != 'undefined'){
       //this.columns = localColumns;
       this.$emit("update:columns", this.$cache.local.getJSON('jsonKey'));
+    }
+  },
+  computed: {
+    style() {
+      const ret = {};
+      if (this.gutter) {
+        ret.marginRight = `${this.gutter / 2}px`;
+      }
+      return ret;
     }
   },
   created() {
