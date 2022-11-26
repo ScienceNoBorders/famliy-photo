@@ -1,4 +1,4 @@
-import store from "@/store";
+
 
 /**
  * 通用js方法封装处理
@@ -86,10 +86,13 @@ export function selectDictLabel(datas, value) {
   return actions.join('');
 }
 
-// 回显数据字典（字符串数组）
+// 回显数据字典（字符串、数组）
 export function selectDictLabels(datas, value, separator) {
-  if (value === undefined) {
+  if (value === undefined || value.length ===0) {
     return "";
+  }
+  if (Array.isArray(value)) {
+    value = value.join(",");
   }
   var actions = [];
   var currentSeparator = undefined === separator ? "," : separator;
@@ -233,26 +236,4 @@ export async function blobValidate(data) {
   } catch (error) {
     return true;
   }
-}
-
-// 计算页面高度
-export function getInitTableHeight(height) {
-  if(height == null || height== '' || height == undefined){
-    height = 0;
-  }
-  let realHeight = 0;
-  const size = store.getters.size
-  let tableHeight = "calc(100vh - 320px)";
-  if(size == 'default'){
-     realHeight = (320-height);
-  }else if(size == 'medium'){
-     realHeight = (310-height);
-  }else if(size == 'small'){
-    realHeight = (305-height);
-  }else if(size == 'mini'){
-    realHeight = (298-height);
-    tableHeight = "calc(100vh - 298px)";
-  }
-   tableHeight = "calc(100vh - "+realHeight+"px)";
-  return tableHeight;
 }
