@@ -559,7 +559,6 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      alert(0)
       this.reset();
       const userId = row.userId || this.ids;
       getUser(userId).then(response => {
