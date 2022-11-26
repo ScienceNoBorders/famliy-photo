@@ -55,7 +55,7 @@
             </el-table-column>
             <el-table-column label="编辑" min-width="5%">
               <template slot-scope="scope">
-                <el-checkbox true-label="1" false-label="0" v-model="scope.row.isEdit"></el-checkbox>
+                <el-checkbox true-label="1" v-model="scope.row.isEdit"></el-checkbox>
               </template>
             </el-table-column>
           </el-table-column>
@@ -68,7 +68,7 @@
             </el-table-column>
             <el-table-column label="查询" min-width="5%">
               <template slot-scope="scope">
-                <el-checkbox true-label="1" false-label="0" v-model="scope.row.isQuery"></el-checkbox>
+                <el-checkbox true-label="1" v-model="scope.row.isQuery"></el-checkbox>
               </template>
             </el-table-column>
             <el-table-column label="查询方式" min-width="10%">
@@ -90,7 +90,7 @@
           <el-table-column header-align="center" label="表单">
             <el-table-column label="必填" min-width="5%">
               <template slot-scope="scope">
-                <el-checkbox true-label="1" false-label="0" v-model="scope.row.isRequired"></el-checkbox>
+                <el-checkbox true-label="1" v-model="scope.row.isRequired"></el-checkbox>
               </template>
             </el-table-column>
             <el-table-column label="显示类型" min-width="12%">
