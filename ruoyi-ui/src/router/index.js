@@ -161,6 +161,20 @@ export const dynamicRoutes = [
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }
     ]
+  },
+  {
+    path: '/tool/gen-extend-edit',
+    component: Layout,
+    hidden: true,
+    permissions: ['tool:gen:edit'],
+    children: [
+      {
+        path: 'index/:tableId(\\d+)',
+        component: () => import('@/views/tool/gen/genExtend/editTable'),
+        name: 'GenEdit',
+        meta: { title: '修改生成配置', activeMenu: '/tool/gen/genExtend' }
+      }
+    ]
   }
 ]
 
