@@ -412,7 +412,7 @@
 </template>
 
 <script>
-import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}";
+import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName}#foreach($column in $uniqueColumns)#set($attrName = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)}), check${attrName}Unique#end } from "@/api/${moduleName}/${businessName}";
 
 export default {
   name: "${BusinessName}",
@@ -420,6 +420,35 @@ export default {
   dicts: [${dicts}],
 #end
   data() {
+##增加前端唯一性校验功能
+#foreach($column in $uniqueColumns)
+#set($attrName = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+    /** ${comment}唯一性校验 */
+    const validate${attrName} = (rule, value, callback) => {
+      if (value  === '' || value  === null) {
+        callback(new Error('请输入${comment}'));
+      } else {
+        const msg = '${comment}已存在'
+        const checkData = {
+          ${column.javaField}: this.form.${column.javaField},
+          id: this.form.id !== undefined ? this.form.id : ''
+        }
+        check${attrName}Unique(checkData).then(response => {
+          if (response.data === '0') {
+            callback()
+          } else {
+            callback(msg)
+          }
+        })
+      }
+    };
+#end
     return {
 #if( $queryCount > 3 )
       advanced: false,
@@ -473,6 +502,7 @@ export default {
       // 表单校验
       rules: {
 #foreach ($column in $columns)
+#set($attrName = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 #if($column.required)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
@@ -481,7 +511,8 @@ export default {
 #set($comment=$column.columnComment)
 #end
         $column.javaField: [
-          { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select")"change"#else"blur"#end }
+          { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select")"change"#else"blur"#end }#if($column.isUnique == '1'),
+          { validator: validate${attrName}, trigger: 'blur' }#end
         ]#if($foreach.count != $columns.size()),#end
     #end
 #end
@@ -492,18 +523,18 @@ export default {
     this.getList();
   },
   methods: {
-   /** 隐藏搜索按钮操作 */
-   showSearchFun(isShowSearch){
+    /** 隐藏搜索按钮操作 */
+    showSearchFun(isShowSearch){
       this.showSearch = isShowSearch
       let oldHeight = this.$refs.queryRef.$el.offsetHeight
       if(!isShowSearch){
-          //当前是显示状态
-          oldHeight = oldHeight + 12
+         //当前是显示状态
+         oldHeight = oldHeight + 12
       }else{
-          oldHeight = oldHeight - 12
+         oldHeight = oldHeight - 12
       }
       this.$nextTick(() => (
-         this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
+        this.tableHeight = this.$refs.tableRef.$el.offsetHeight - (this.$refs.queryRef.$el.offsetHeight-oldHeight)
       ))
     },
 #if( $queryCount > 3 )
