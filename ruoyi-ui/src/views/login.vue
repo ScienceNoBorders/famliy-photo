@@ -71,7 +71,7 @@
           </ul>
         </div>
         <div class="el-login-footer">
-          Copyright © 2018-2022 ruoyi.vip All Rights Reserved.
+          Copyright © 2018-2023 ruoyi.vip All Rights Reserved.
         </div>
       </div>
     </el-tab-pane>
@@ -150,7 +150,7 @@
         <!-- 侧栏 -->
 
         <div class="el-login-footer">
-          Copyright © 2018-2022 ruoyi.vip All Rights Reserved.
+          Copyright © 2018-2023 ruoyi.vip All Rights Reserved.
         </div>
       </div>
     </el-tab-pane>
@@ -219,7 +219,7 @@
         <div class="login-pic03"></div>
 </div>
         <div class="el-login-footer">
-          Copyright © 2018-2022 ruoyi.vip All Rights Reserved.
+          Copyright © 2018-2023 ruoyi.vip All Rights Reserved.
         </div>
       </div>
     </el-tab-pane>
