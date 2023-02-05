@@ -1,16 +1,17 @@
 package com.ruoyi.common.filter;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.html.EscapeUtil;
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import org.apache.commons.io.IOUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.html.EscapeUtil;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * XSS过滤处理
@@ -34,13 +35,13 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper
         if (values != null)
         {
             int length = values.length;
-            String[] escapseValues = new String[length];
+            String[] escapesValues = new String[length];
             for (int i = 0; i < length; i++)
             {
                 // 防xss攻击和过滤前后空格
-                escapseValues[i] = EscapeUtil.clean(values[i]).trim();
+                escapesValues[i] = EscapeUtil.clean(values[i]).trim();
             }
-            return escapseValues;
+            return escapesValues;
         }
         return super.getParameterValues(name);
     }
