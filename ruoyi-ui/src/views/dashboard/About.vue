@@ -11,7 +11,7 @@
           </template>
           <div class="box">
             <p style="text-indent: 30px;line-height: 200%;margin: -5px;">
-              基于RuoYi-Vue2（Element）扩展，仅升级前端展示样式，修改代码生成器，未修改任何后端代码，目前已经在多个项目中使用，取得良好应用，适配RuoYi-Vue版本：V3.8.4
+              基于RuoYi-Vue2（Element）扩展，仅升级前端展示样式，修改代码生成器，未修改任何后端代码，目前已经在多个项目中使用，取得良好应用，适配RuoYi-Vue版本：V3.8.5
             </p>
             <p style="text-indent: 30px;line-height: 200%;color: red;">
                仅售499，可以兼容历史版本，支持无缝升级（请访问：www.aidex.vip，获取），可联系【15389457063】或者扫描在Aidex体验环境微信扫码咨询【皮皮大刺猬】

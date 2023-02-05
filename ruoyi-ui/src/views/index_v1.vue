@@ -803,8 +803,8 @@ export default {
   methods: {
     goTarget(href) {
       window.open(href, "_blank");
-    },
-  },
+    }
+  }
 };
 </script>
 
