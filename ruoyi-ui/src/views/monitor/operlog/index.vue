@@ -132,16 +132,15 @@
 
       <el-table ref="tables" v-loading="loading" :data="list" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange"  highlight-current-row style="width: 100%;"
         :height="tableHeight">
-        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column type="selection" width="50" align="center" />
         <el-table-column label="日志编号" align="center" prop="operId" />
-        <el-table-column label="系统模块" align="center" prop="title" />
+        <el-table-column label="系统模块" align="center" prop="title" :show-overflow-tooltip="true"/>
         <el-table-column label="操作类型" align="center" prop="businessType">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.sys_oper_type" :value="scope.row.businessType"/>
           </template>
         </el-table-column>
-        <el-table-column label="请求方式" align="center" prop="requestMethod" />
-        <el-table-column label="操作人员" align="center" prop="operName" width="100" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
+        <el-table-column label="操作人员" align="center" prop="operName" width="110" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
         <el-table-column label="操作地址" align="center" prop="operIp" width="130" :show-overflow-tooltip="true" />
         <el-table-column label="操作地点" align="center" prop="operLocation" :show-overflow-tooltip="true" />
         <el-table-column label="操作状态" align="center" prop="status">
@@ -149,9 +148,14 @@
             <dict-tag :options="dict.type.sys_common_status" :value="scope.row.status"/>
           </template>
         </el-table-column>
-        <el-table-column label="操作日期" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
+        <el-table-column label="操作日期" align="center" prop="operTime" width="160" sortable="custom" :sort-orders="['descending', 'ascending']">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.operTime) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="消耗时间" align="center" prop="costTime" width="110" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
+          <template slot-scope="scope">
+            <span>{{ scope.row.costTime }}毫秒</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -230,6 +234,11 @@
                       :value="dict.value"
                     />
                   </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="消耗时间(毫秒)：">
+                  <el-input v-model="form.costTime" disabled/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
