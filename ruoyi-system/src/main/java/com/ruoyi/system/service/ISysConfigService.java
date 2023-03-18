@@ -1,7 +1,8 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
 import com.ruoyi.system.domain.SysConfig;
+
+import java.util.List;
 
 /**
  * 参数配置 服务层
@@ -85,5 +86,5 @@ public interface ISysConfigService
      * @param config 参数信息
      * @return 结果
      */
-    public String checkConfigKeyUnique(SysConfig config);
+    public boolean checkConfigKeyUnique(SysConfig config);
 }

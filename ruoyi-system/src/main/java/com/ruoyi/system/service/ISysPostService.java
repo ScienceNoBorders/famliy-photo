@@ -1,7 +1,8 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
 import com.ruoyi.system.domain.SysPost;
+
+import java.util.List;
 
 /**
  * 岗位信息 服务层
@@ -47,7 +48,7 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 结果
      */
-    public String checkPostNameUnique(SysPost post);
+    public boolean checkPostNameUnique(SysPost post);
 
     /**
      * 校验岗位编码
@@ -55,7 +56,7 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 结果
      */
-    public String checkPostCodeUnique(SysPost post);
+    public boolean checkPostCodeUnique(SysPost post);
 
     /**
      * 通过岗位ID查询岗位使用数量

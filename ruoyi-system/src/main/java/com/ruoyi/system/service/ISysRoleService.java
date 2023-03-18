@@ -1,9 +1,10 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-import java.util.Set;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.system.domain.SysUserRole;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * 角色业务层
@@ -65,7 +66,7 @@ public interface ISysRoleService
      * @param role 角色信息
      * @return 结果
      */
-    public String checkRoleNameUnique(SysRole role);
+    public boolean checkRoleNameUnique(SysRole role);
 
     /**
      * 校验角色权限是否唯一
@@ -73,7 +74,7 @@ public interface ISysRoleService
      * @param role 角色信息
      * @return 结果
      */
-    public String checkRoleKeyUnique(SysRole role);
+    public boolean checkRoleKeyUnique(SysRole role);
 
     /**
      * 校验角色是否允许操作
