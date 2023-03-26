@@ -1,4 +1,4 @@
-import store from "@/store";
+
 
 /**
  * 通用js方法封装处理
@@ -228,14 +228,8 @@ export function tansParams(params) {
 }
 
 // 验证是否为blob格式
-export async function blobValidate(data) {
-  try {
-    const text = await data.text();
-    JSON.parse(text);
-    return false;
-  } catch (error) {
-    return true;
-  }
+export function blobValidate(data) {
+  return data.type !== 'application/json'
 }
 
 // 计算页面高度
