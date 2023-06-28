@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.family.generator.mapper.GenConfigTemplateMapper">
+    
+    <resultMap type="GenConfigTemplate" id="GenConfigTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="functionAuthor"    column="function_author"    />
+        <result property="functionAuthorEmail"    column="function_author_email"    />
+        <result property="workspacePath"    column="workspace_path"    />
+        <result property="webWorkspacePath"    column="web_workspace_path"    />
+        <result property="moduleName"    column="module_name"    />
+        <result property="packageName"    column="package_name"    />
+        <result property="sort"    column="sort"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectGenConfigTemplateVo">
+        select id, template_name, function_author, function_author_email, workspace_path, web_workspace_path, module_name, package_name, sort, create_by, create_time, update_by, update_time, remark from gen_config_template
+    </sql>
+
+    <select id="selectGenConfigTemplateList" parameterType="GenConfigTemplate" resultMap="GenConfigTemplateResult">
+        <include refid="selectGenConfigTemplateVo"/>
+        <where>  
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="functionAuthor != null  and functionAuthor != ''"> and function_author = #{functionAuthor}</if>
+            <if test="functionAuthorEmail != null  and functionAuthorEmail != ''"> and function_author_email = #{functionAuthorEmail}</if>
+            <if test="workspacePath != null  and workspacePath != ''"> and workspace_path = #{workspacePath}</if>
+            <if test="webWorkspacePath != null  and webWorkspacePath != ''"> and web_workspace_path = #{webWorkspacePath}</if>
+            <if test="moduleName != null  and moduleName != ''"> and module_name like concat('%', #{moduleName}, '%')</if>
+            <if test="packageName != null  and packageName != ''"> and package_name like concat('%', #{packageName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectGenConfigTemplateById" parameterType="String" resultMap="GenConfigTemplateResult">
+        <include refid="selectGenConfigTemplateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGenConfigTemplate" parameterType="GenConfigTemplate">
+        insert into gen_config_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="templateName != null and templateName != ''">template_name,</if>
+            <if test="functionAuthor != null and functionAuthor != ''">function_author,</if>
+            <if test="functionAuthorEmail != null and functionAuthorEmail != ''">function_author_email,</if>
+            <if test="workspacePath != null and workspacePath != ''">workspace_path,</if>
+            <if test="webWorkspacePath != null">web_workspace_path,</if>
+            <if test="moduleName != null and moduleName != ''">module_name,</if>
+            <if test="packageName != null and packageName != ''">package_name,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="templateName != null and templateName != ''">#{templateName},</if>
+            <if test="functionAuthor != null and functionAuthor != ''">#{functionAuthor},</if>
+            <if test="functionAuthorEmail != null and functionAuthorEmail != ''">#{functionAuthorEmail},</if>
+            <if test="workspacePath != null and workspacePath != ''">#{workspacePath},</if>
+            <if test="webWorkspacePath != null">#{webWorkspacePath},</if>
+            <if test="moduleName != null and moduleName != ''">#{moduleName},</if>
+            <if test="packageName != null and packageName != ''">#{packageName},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGenConfigTemplate" parameterType="GenConfigTemplate">
+        update gen_config_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateName != null and templateName != ''">template_name = #{templateName},</if>
+            <if test="functionAuthor != null and functionAuthor != ''">function_author = #{functionAuthor},</if>
+            <if test="functionAuthorEmail != null and functionAuthorEmail != ''">function_author_email = #{functionAuthorEmail},</if>
+            <if test="workspacePath != null and workspacePath != ''">workspace_path = #{workspacePath},</if>
+            <if test="webWorkspacePath != null">web_workspace_path = #{webWorkspacePath},</if>
+            <if test="moduleName != null and moduleName != ''">module_name = #{moduleName},</if>
+            <if test="packageName != null and packageName != ''">package_name = #{packageName},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGenConfigTemplateById" parameterType="String">
+        delete from gen_config_template where id = #{id}
+    </delete>
+
+    <delete id="deleteGenConfigTemplateByIds" parameterType="String">
+        delete from gen_config_template where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="findMaxSort" resultType="integer">
+        select max(a.sort)
+        from gen_config_template a
+    </select>
+
+</mapper>

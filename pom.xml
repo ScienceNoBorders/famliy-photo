@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
+    <groupId>familyphoto</groupId>
+    <artifactId>family-photo</artifactId>
     <version>3.8.5</version>
 
-    <name>ruoyi</name>
+    <name>family-photo</name>
     <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <description>家庭相册系统</description>
     
     <properties>
-        <ruoyi.version>3.8.5</ruoyi.version>
+        <family-photo.version>3.8.5</family-photo.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -137,57 +137,57 @@
 
             <!-- 定时任务-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-quartz</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>familyphoto</groupId>
+                <artifactId>family-photo-quartz</artifactId>
+                <version>${family-photo.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>familyphoto</groupId>
+                <artifactId>family-photo-generator</artifactId>
+                <version>${family-photo.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-framework</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>familyphoto</groupId>
+                <artifactId>family-photo-framework</artifactId>
+                <version>${family-photo.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-system</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>familyphoto</groupId>
+                <artifactId>family-photo-system</artifactId>
+                <version>${family-photo.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>familyphoto</groupId>
+                <artifactId>family-photo-common</artifactId>
+                <version>${family-photo.version}</version>
             </dependency>
 
             <!-- demo模块 -->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-demo</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>familyphoto</groupId>
+                <artifactId>family-photo-demo</artifactId>
+                <version>${family-photo.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
-        <module>ruoyi-quartz</module>
-        <module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
-        <module>ruoyi-demo</module>
+        <module>family-photo-admin</module>
+        <module>family-photo-framework</module>
+        <module>family-photo-system</module>
+        <module>family-photo-quartz</module>
+        <module>family-photo-generator</module>
+        <module>family-photo-common</module>
+        <module>family-photo-demo</module>
     </modules>
     <packaging>pom</packaging>
 
