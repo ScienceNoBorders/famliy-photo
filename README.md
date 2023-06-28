@@ -1,6 +1,7 @@
 # 家庭相册（family-photo）
 <p align="center">
-<a href="https://github.com/ScienceNoBorders/famliy-photo/blob/master/VPS/image/wechat.png"><img src="https://img.shields.io/static/v1?label=WeChat&message=wzgzjqeds23&color=violet&logo=wechat">
+<a href="https://github.com/ScienceNoBorders/ExperienceSharing/blob/master/VPS/image/wechat.png"><img src="https://img.shields.io/static/v1?label=WeChat&message=wzgzjqeds23&color=violet&logo=wechat">
+<a href="https://github.com/ScienceNoBorders/famliy-photo/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
 
 <p align="center">
@@ -9,6 +10,7 @@
 <p align="center">
 <a href="https://github.com/ScienceNoBorders/famliy-photo"><img src="https://img.shields.io/github/stars/ScienceNoBorders/famliy-photo.svg?style=social&label=github%20stars" alt="Issue Status"></a>
 </p>
+
 
 ## 系统简介
 
